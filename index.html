@@ -1,0 +1,3473 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Evaluación</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --gray-color: #95a5a6;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .user-info span {
+            font-weight: 500;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+        .btn-warning:hover {
+            background-color: #d68910;
+        }
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        .card-header h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        .login-container {
+            max-width: 500px;
+            margin: 50px auto;
+        }
+        .login-card {
+            padding: 30px;
+        }
+        .login-card h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--primary-color);
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .tab.active {
+            border-bottom: 3px solid var(--secondary-color);
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+        .table tr:hover {
+            background-color: #f9f9f9;
+        }
+        .topic-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            flex-wrap: wrap;
+        }
+        .topic-item:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .topic-title {
+            font-weight: 600;
+            font-size: 1.1rem;
+            flex-grow: 1;
+            margin-right: 15px;
+        }
+        .topic-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .question-item {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            background-color: #f9f9f9;
+        }
+        .question-number {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        .timer {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--danger-color);
+            text-align: center;
+            margin: 20px 0;
+        }
+        .notification {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+        .notification.success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+        .notification.error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+        .notification.warning {
+            background-color: rgba(243, 156, 18, 0.2);
+            color: var(--warning-color);
+            border: 1px solid var(--warning-color);
+        }
+        .notification.show {
+            display: block;
+        }
+        .results-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        .result-item {
+            padding: 15px;
+            flex: 1;
+            min-width: 120px;
+        }
+        .result-value {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .result-label {
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+        .correct {
+            color: var(--success-color);
+        }
+        .incorrect {
+            color: var(--danger-color);
+        }
+        .hidden {
+            display: none;
+        }
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .file-upload input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-header h3 {
+            color: var(--primary-color);
+        }
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-color);
+        }
+        .close-modal:hover {
+            color: var(--danger-color);
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .form-check {
+            margin-bottom: 10px;
+        }
+        .form-check-input {
+            margin-right: 10px;
+        }
+        /* Media Queries para dispositivos móviles */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            .logo h1 {
+                font-size: 1.5rem;
+            }
+            .logo i {
+                font-size: 1.5rem;
+            }
+            .user-info {
+                justify-content: center;
+                width: 100%;
+            }
+            .btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            .card {
+                padding: 15px;
+            }
+            .card-header h2 {
+                font-size: 1.2rem;
+            }
+            .login-container {
+                margin: 30px auto;
+            }
+            .login-card {
+                padding: 20px;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab {
+                border-bottom: 1px solid #ddd;
+                border-right: none;
+                padding: 10px 15px;
+            }
+            .tab.active {
+                border-bottom: 1px solid #ddd;
+                border-left: 3px solid var(--secondary-color);
+            }
+            .results-summary {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .result-item {
+                padding: 10px;
+            }
+            .result-value {
+                font-size: 1.5rem;
+            }
+            .topic-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .topic-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            .action-buttons {
+                justify-content: center;
+            }
+            .modal-content {
+                padding: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .form-control {
+                padding: 10px;
+            }
+            .timer {
+                font-size: 1.2rem;
+            }
+        }
+        /* Media Queries para tablets */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .container {
+                width: 95%;
+            }
+            .header-content {
+                flex-direction: row;
+            }
+            .logo h1 {
+                font-size: 1.6rem;
+            }
+            .card {
+                padding: 20px;
+            }
+            .action-buttons {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-globe-americas"></i>
+                    <h1>Sistema de Evaluación</h1>
+                </div>
+                <div class="user-info" id="userInfo">
+                    <span id="userName"></span>
+                    <span id="userRole"></span>
+                    <button class="btn btn-danger btn-sm" id="logoutBtn" onclick="logout()">Cerrar sesión</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Login Container -->
+    <div class="container login-container" id="loginContainer">
+        <div class="card login-card">
+            <h2>Sistema de Evaluación</h2>
+            <div id="notification" class="notification"></div>
+            <div class="tabs">
+                <div class="tab active" onclick="switchTab('studentTab', event)">Estudiante</div>
+                <div class="tab" onclick="switchTab('teacherTab', event)">Profesor</div>
+                <div class="tab" onclick="switchTab('adminTab', event)">Administrador</div>
+            </div>
+            <!-- Student Login -->
+            <div id="studentTab" class="tab-content active">
+                <form id="studentLoginForm">
+                    <div class="form-group">
+                        <label for="studentName">Nombre de Estudiante</label>
+                        <input type="text" id="studentName" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Ingresar como Estudiante</button>
+                </form>
+            </div>
+            <!-- Teacher Login -->
+            <div id="teacherTab" class="tab-content">
+                <form id="teacherLoginForm">
+                    <div class="form-group">
+                        <label for="teacherUsername">Usuario</label>
+                        <input type="text" id="teacherUsername" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPassword">Contraseña</label>
+                        <input type="password" id="teacherPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Ingresar como Profesor</button>
+                </form>
+            </div>
+            <!-- Admin Login -->
+            <div id="adminTab" class="tab-content">
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label for="adminUsername">Usuario</label>
+                        <input type="text" id="adminUsername" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="adminPassword">Contraseña</label>
+                        <input type="password" id="adminPassword" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn">Ingresar como Administrador</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="container" id="mainContent" style="display: none;">
+        <!-- Admin Dashboard -->
+        <div id="adminDashboard" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Panel de Administrador</h2>
+                </div>
+                <div class="tabs">
+                        <div class="tab active" onclick="switchAdminTab('usersTab', event)">Gestión de Usuarios</div>
+                        <div class="tab" onclick="switchAdminTab('topicsTab', event)">Gestión de Temas</div>
+            <div class="tab" onclick="switchAdminTab('adminTeacherTab', event)">Funciones de Profesor</div>
+                </div>
+                <!-- Users Management -->
+                <div id="usersTab" class="tab-content active">
+                    <div class="action-buttons">
+                        <button class="btn btn-success btn-sm" onclick="showAddUserModal()">Agregar Usuario</button>
+                        <button class="btn btn-warning btn-sm" onclick="showResetPasswordModal()">Restablecer Contraseña</button>
+                        <button class="btn btn-warning btn-sm" onclick="showChangeAdminPasswordModal()">Cambiar mi Contraseña</button>
+                        <button class="btn btn-sm" onclick="exportUsers()">Exportar Usuarios</button>
+                        <button class="btn btn-sm" onclick="exportAllData()">Exportar Datos (todo excepto temas)</button>
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Usuarios
+                            <input aria-label="Importar usuarios" type="file" id="importUsers" accept=".json" onchange="importUsers(event)">
+                        </div>
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Datos
+                            <input aria-label="Importar datos" type="file" id="importAll" accept=".json" onchange="importAllData(event)">
+                        </div>
+                        <button class="btn btn-danger btn-sm" onclick="clearLocalStorage()">Limpiar Datos</button>
+                    </div>
+                    <h4>Historial de Importaciones</h4>
+                    <div id="importHistoryList" class="card">
+                        <!-- Import history will be rendered here -->
+                    </div>
+                    <h3>Profesores</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Asignatura</th>
+                                    <th>Provincia</th>
+                                    <th>Centro Educativo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachersTableBody">
+                                <!-- Teachers will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <h3>Estudiantes</h3>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Usuario</th>
+                                    <th>Grado</th>
+                                    <th>Provincia</th>
+                                    <th>Centro Educativo</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <!-- Students will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- Topics Management -->
+                <div id="topicsTab" class="tab-content">
+                    <div class="action-buttons">
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Tema
+                            <input aria-label="Importar tema" type="file" id="importTopic" accept=".geo" onchange="importTopic(event)">
+                        </div>
+                    </div>
+                    <h3>Temas Disponibles</h3>
+                    <div id="topicsList">
+                        <!-- Topics will be loaded here -->
+                    </div>
+                </div>
+                <!-- Admin-embedded Teacher Panel -->
+                <div id="adminTeacherTab" class="tab-content">
+                    <div class="action-buttons">
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Tema (Profesor)
+                            <input aria-label="Importar tema (admin-profesor)" type="file" id="adminImportTopic" accept=".geo" onchange="importTopic(event)">
+                        </div>
+                                <button class="btn btn-success btn-sm" onclick="goToTeacherPanelFromAdmin()">Ir al panel de Profesor</button>
+                    </div>
+                        <!-- Admin create/edit topic form -->
+                        <div id="adminCreateTopicArea" class="card" style="margin-top:15px;">
+                            <div class="card-header"><h3>Crear / Editar Tema (Admin)</h3></div>
+                            <form id="adminCreateTopicForm">
+                                <div class="form-group">
+                                    <label for="adminTopicTitle">Título del Tema</label>
+                                    <input type="text" id="adminTopicTitle" class="form-control" required>
+                                </div>
+                                <div id="adminQuestionsContainer">
+                                    <h3>Preguntas</h3>
+                                    <div class="question-item">
+                                        <div class="question-number">Pregunta 1</div>
+                                        <div class="form-group">
+                                            <label>Enunciado</label>
+                                            <input type="text" class="form-control question-text" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Opción A</label>
+                                            <input type="text" class="form-control option-a" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Opción B</label>
+                                            <input type="text" class="form-control option-b" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Opción C</label>
+                                            <input type="text" class="form-control option-c" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Opción D</label>
+                                            <input type="text" class="form-control option-d" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Respuesta Correcta</label>
+                                            <select class="form-control correct-answer" required>
+                                                <option value="">Selecciona...</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="btn btn-sm" onclick="addQuestionAdmin()">Agregar Pregunta</button>
+                                    <button type="button" class="btn btn-success btn-sm" onclick="saveTopicAdmin()">Guardar Tema</button>
+                                    <button type="button" class="btn btn-warning btn-sm" onclick="exportAdminCurrentTopic()">Exportar Tema</button>
+                                    <button type="button" id="cancelEditAdminBtn" class="btn btn-sm" style="display:none;" onclick="cancelEditAdmin()">Cancelar</button>
+                                </div>
+                            </form>
+                        </div>
+                    <h3>Temas (vista de Profesor embebida)</h3>
+                    <div id="adminTeacherTopicsList">
+                        <!-- Topics list for admin (teacher actions) -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Teacher Dashboard -->
+        <div id="teacherDashboard" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Panel de Profesor</h2>
+                </div>
+                <div class="tabs">
+                    <div class="tab active" onclick="switchTeacherTab('createTopicTab', event)">Crear Tema</div>
+                    <div class="tab" onclick="switchTeacherTab('topicsTab', event)">Mis Temas</div>
+                    <div class="tab" onclick="switchTeacherTab('resultsTab', event)">Resultados de Estudiantes</div>
+                </div>
+                <div style="margin-top:10px;">
+                    <button id="adminBackBtn" class="btn btn-sm" style="display:none;" onclick="backToAdmin()">Volver al Administrador</button>
+                </div>
+                <!-- Create Topic -->
+                <div id="createTopicTab" class="tab-content active">
+                    <form id="createTopicForm">
+                        <div class="form-group">
+                            <label for="topicTitle">Título del Tema</label>
+                            <input type="text" id="topicTitle" class="form-control" required>
+                        </div>
+                        <div id="questionsContainer">
+                            <h3>Preguntas</h3>
+                            <div class="question-item">
+                                <div class="question-number">Pregunta 1</div>
+                                <div class="form-group">
+                                    <label>Enunciado</label>
+                                    <input type="text" class="form-control question-text" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Opción A</label>
+                                    <input type="text" class="form-control option-a" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Opción B</label>
+                                    <input type="text" class="form-control option-b" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Opción C</label>
+                                    <input type="text" class="form-control option-c" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Opción D</label>
+                                    <input type="text" class="form-control option-d" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Respuesta Correcta</label>
+                                    <select class="form-control correct-answer" required>
+                                        <option value="">Selecciona...</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="action-buttons">
+                            <button type="button" class="btn btn-sm" onclick="addQuestion()">Agregar Pregunta</button>
+                            <button type="submit" class="btn btn-success btn-sm">Guardar Tema</button>
+                            <button type="button" class="btn btn-warning btn-sm" onclick="exportCurrentTopic()">Exportar Tema</button>
+                            <button type="button" id="cancelEditBtn" class="btn btn-sm" style="display:none;" onclick="cancelTopicEdit()">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Topics List -->
+                <!-- CORRECCIÓN: Se cambia el ID de 'topicsTab' a 'topicsContent' -->
+                <div id="topicsContent" class="tab-content">
+                    <div class="action-buttons">
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Tema
+                            <input aria-label="Importar tema profesor" type="file" id="teacherImportTopic" accept=".geo" onchange="importTopic(event)">
+                        </div>
+                    </div>
+                    <h3>Mis Temas</h3>
+                    <div id="teacherTopicsList">
+                        <!-- Topics will be loaded here -->
+                    </div>
+                </div>
+                <!-- Student Results -->
+                <div id="resultsTab" class="tab-content">
+                    <h3>Resultados de Estudiantes</h3>
+                    <div class="form-group">
+                        <label for="topicFilter">Filtrar por Tema</label>
+                        <select id="topicFilter" class="form-control" onchange="filterResults()">
+                            <option value="">Todos los temas</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gradeFilter">Filtrar por Grado</label>
+                        <select id="gradeFilter" class="form-control" onchange="filterResults()">
+                            <option value="">Todos los grados</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="provinceFilter">Filtrar por Provincia</label>
+                        <select id="provinceFilter" class="form-control" onchange="filterResults()">
+                            <option value="">Todas las provincias</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="centerFilter">Filtrar por Centro Educativo</label>
+                        <select id="centerFilter" class="form-control" onchange="filterResults()">
+                            <option value="">Todos los centros</option>
+                        </select>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm" onclick="exportResults()">Exportar Resultados</button>
+                        <div class="file-upload btn btn-sm">
+                            <i class="fas fa-file-import"></i> Importar Resultados
+                            <input aria-label="Importar resultados" type="file" id="importResults" accept=".json" onchange="importResults(event)">
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                            <th>Estudiante</th>
+                                            <th>Grado</th>
+                                            <th>Provincia</th>
+                                            <th>Centro Educativo</th>
+                                            <th>Tema</th>
+                                            <th>Nota</th>
+                                            <th>Correctas</th>
+                                            <th>Incorrectas</th>
+                                            <th>Tiempo</th>
+                                            <th>Identificador</th>
+                                            <th>Fecha</th>
+                                            <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTableBody">
+                                <!-- Results will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Student Dashboard -->
+        <div id="studentDashboard" class="hidden">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Panel de Estudiante</h2>
+                </div>
+                <div id="studentTopicsSelection">
+                    <h3>Selecciona un tema para comenzar</h3>
+                    <div id="studentTopicsList">
+                        <!-- Topics will be loaded here -->
+                    </div>
+                </div>
+                <div id="studentTestContainer" class="hidden">
+                    <div class="timer" id="timer">00:00</div>
+                    <h3 id="currentTopicTitle"></h3>
+                    <!-- CORRECCIÓN: Se cambia el ID a 'studentQuestionsContainer' -->
+                    <div id="studentQuestionsContainer">
+                        <!-- Questions will be loaded here -->
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-success btn-sm" onclick="submitTest()">Enviar Respuestas</button>
+                    </div>
+                </div>
+                <div id="studentResultsContainer" class="hidden">
+                    <h3>Resultados del Test</h3>
+                    <div class="results-summary">
+                        <div class="result-item">
+                            <div class="result-value" id="finalScore">0</div>
+                            <div class="result-label">Nota Final</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value correct" id="correctCount">0</div>
+                            <div class="result-label">Respuestas Correctas</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value incorrect" id="incorrectCount">0</div>
+                            <div class="result-label">Respuestas Incorrectas</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="result-value" id="timeSpent">00:00</div>
+                            <div class="result-label">Tiempo Empleado</div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm" onclick="showResultSummaryModal(lastResultId)">Volver a Temas</button>
+                    </div>
+                    <div id="answersReview">
+                        <!-- Answers review will be loaded here -->
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm" onclick="showResultSummaryModal(lastResultId)">Volver a Temas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Result Summary Modal (student) -->
+    <div id="resultSummaryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Resumen del Resultado</h3>
+                <span class="close-modal" onclick="closeModal('resultSummaryModal')">&times;</span>
+            </div>
+            <div id="resultSummaryBody">
+                <!-- Filled dynamically -->
+            </div>
+            <div class="action-buttons">
+                <button type="button" class="btn btn-sm" onclick="closeModal('resultSummaryModal'); backToTopics();">Aceptar y Volver</button>
+            </div>
+        </div>
+    </div>
+    <!-- Add User Modal -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Agregar Nuevo Usuario</h3>
+                <span class="close-modal" onclick="closeModal('addUserModal')">&times;</span>
+            </div>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label for="userType">Tipo de Usuario</label>
+                    <select id="userType" class="form-control" required onchange="toggleStudentNameField()">
+                        <option value="teacher">Profesor</option>
+                        <option value="student">Estudiante</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newUsername">Usuario</label>
+                    <input type="text" id="newUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">Contraseña</label>
+                    <input type="password" id="newPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newProvince">Provincia</label>
+                    <select id="newProvince" class="form-control">
+                        <option value="">-- Seleccionar Provincia --</option>
+                        <option>Pinar del Río</option>
+                        <option>Artemisa</option>
+                        <option>La Habana</option>
+                        <option>Mayabeque</option>
+                        <option>Matanzas</option>
+                        <option>Cienfuegos</option>
+                        <option>Villa Clara</option>
+                        <option>Sancti Spíritus</option>
+                        <option>Ciego de Ávila</option>
+                        <option>Camagüey</option>
+                        <option>Las Tunas</option>
+                        <option>Holguín</option>
+                        <option>Granma</option>
+                        <option>Santiago de Cuba</option>
+                        <option>Guantánamo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="newSchool">Centro Educativo</label>
+                    <input type="text" id="newSchool" class="form-control" placeholder="Nombre del centro educativo (opcional)">
+                </div>
+                <div class="form-group" id="studentNameGroup" style="display: none;">
+                    <label for="newStudentName">Nombre Completo</label>
+                    <input type="text" id="newStudentName" class="form-control">
+                </div>
+                <div class="form-group" id="newGradeGroup" style="display: none;">
+                    <label for="newGrade">Grado</label>
+                    <select id="newGrade" class="form-control">
+                        <option value="">-- Seleccionar Grado --</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                </div>
+                <div class="form-group" id="newSubjectGroup" style="display: none;">
+                    <label for="newSubject">Asignatura</label>
+                    <input type="text" id="newSubject" class="form-control" placeholder="Asignatura para el profesor (opcional)">
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-sm" onclick="closeModal('addUserModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success btn-sm">Guardar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Reset Password Modal -->
+    <div id="resetPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Restablecer Contraseña</h3>
+                <span class="close-modal" onclick="closeModal('resetPasswordModal')">&times;</span>
+            </div>
+            <form id="resetPasswordForm">
+                <div class="form-group">
+                    <label for="resetUserType">Tipo de Usuario</label>
+                    <select id="resetUserType" class="form-control" required>
+                        <option value="teacher">Profesor</option>
+                        <option value="student">Estudiante</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="resetUsername">Usuario</label>
+                    <input type="text" id="resetUsername" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPasswordReset">Nueva Contraseña</label>
+                    <input type="password" id="newPasswordReset" class="form-control" required>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-sm" onclick="closeModal('resetPasswordModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success btn-sm">Restablecer Contraseña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Change Admin Password Modal -->
+    <div id="changeAdminPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cambiar Contraseña de Administrador</h3>
+                <span class="close-modal" onclick="closeModal('changeAdminPasswordModal')">&times;</span>
+            </div>
+            <form id="changeAdminPasswordForm">
+                <div class="form-group">
+                    <label for="currentAdminPassword">Contraseña Actual</label>
+                    <input type="password" id="currentAdminPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="newAdminPassword">Nueva Contraseña</label>
+                    <input type="password" id="newAdminPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmNewAdminPassword">Confirmar Nueva Contraseña</label>
+                    <input type="password" id="confirmNewAdminPassword" class="form-control" required>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-sm" onclick="closeModal('changeAdminPasswordModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success btn-sm">Cambiar Contraseña</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Clear Storage Confirmation Modal -->
+    <div id="clearStorageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Confirmar Limpieza de Datos</h3>
+                <span class="close-modal" onclick="closeModal('clearStorageModal')">&times;</span>
+            </div>
+            <div class="form-group">
+                <p>¿Estás seguro de que quieres eliminar todos los datos del sistema? Esta acción no se puede deshacer y borrará:</p>
+                <ul>
+                    <li>Todos los usuarios (excepto el administrador)</li>
+                    <li>Todos los temas</li>
+                    <li>Todos los resultados de estudiantes</li>
+                </ul>
+                <p>El sistema se reiniciará con la configuración por defecto.</p>
+            </div>
+            <div class="action-buttons">
+                <button type="button" class="btn btn-sm" onclick="closeModal('clearStorageModal')">Cancelar</button>
+                <button type="button" class="btn btn-danger btn-sm" onclick="confirmClearStorage()">Limpiar Datos</button>
+            </div>
+        </div>
+    </div>
+    <!-- Configure Timer Modal -->
+    <div id="configureTimerModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Configurar Temporizador para el Tema</h3>
+                <span class="close-modal" onclick="closeModal('configureTimerModal')">&times;</span>
+            </div>
+            <form id="configureTimerForm">
+                <div class="form-group">
+                    <label for="timerType">Tipo de Temporizador</label>
+                    <select id="timerType" class="form-control" required>
+                        <option value="ascending">Ascendente (Cronómetro)</option>
+                        <option value="descending">Descendente (Cuenta Regresiva)</option>
+                    </select>
+                </div>
+                <div class="form-group" id="timeLimitGroup" style="display: none;">
+                    <label for="timeLimitMinutes">Tiempo Límite (minutos)</label>
+                    <input type="number" id="timeLimitMinutes" class="form-control" min="1" max="180" value="30" required>
+                </div>
+                <div class="action-buttons">
+                    <button type="button" class="btn btn-sm" onclick="closeModal('configureTimerModal')">Cancelar</button>
+                    <button type="submit" class="btn btn-success btn-sm">Guardar Configuración</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Import Summary Modal -->
+    <div id="importSummaryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Resumen de Importación</h3>
+                <span class="close-modal" onclick="closeModal('importSummaryModal')">&times;</span>
+            </div>
+            <div id="importSummaryBody">
+                <!-- Dynamic content: list of pending items -->
+            </div>
+            <div class="action-buttons">
+                <button type="button" class="btn btn-sm" onclick="closeModal('importSummaryModal')">Cancelar</button>
+                <button type="button" class="btn btn-success btn-sm" onclick="applyImportDecisions()">Aplicar Cambios</button>
+            </div>
+        </div>
+    </div>
+            <!-- Temporary Passwords Modal -->
+            <div id="tempPasswordsModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Contraseñas Temporales Generadas</h3>
+                        <span class="close-modal" onclick="closeModal('tempPasswordsModal')">&times;</span>
+                    </div>
+                    <div id="tempPasswordsBody" style="max-height:60vh; overflow:auto;">
+                        <!-- Filled dynamically -->
+                    </div>
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-sm" onclick="closeModal('tempPasswordsModal')">Cerrar</button>
+                        <button type="button" class="btn btn-success btn-sm" onclick="downloadTempPasswords()">Descargar CSV</button>
+                    </div>
+                </div>
+            </div>
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentRole = null;
+        let currentTopic = null; // will hold topic object with id
+        let editingTopicId = null; // when editing a topic, store its id
+        let startTime = null;
+        let timerInterval = null;
+        let studentAnswers = [];
+        let questionCount = 0; // computed from DOM when needed
+        let isDescendingTimer = false;
+        let timeLimitInSeconds = 0;
+        let lastResultId = null;
+
+        // Generate a random 15-digit identifier
+        function generate15DigitId() {
+            let s = '';
+            for (let i = 0; i < 15; i++) {
+                s += Math.floor(Math.random() * 10).toString();
+            }
+            return s;
+        }
+        let timeRemaining = 0;
+    let topicFormDirty = false; // track unsaved changes in topic form
+
+        // Storage helpers: IndexedDB first, fallback to localStorage
+        const DB_NAME = 'GeoEvaluacionDB';
+        const DB_STORE = 'registroStore';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                if (!('indexedDB' in window)) return resolve(null);
+                const req = indexedDB.open(DB_NAME, 1);
+                req.onupgradeneeded = () => {
+                    const db = req.result;
+                    if (!db.objectStoreNames.contains(DB_STORE)) {
+                        db.createObjectStore(DB_STORE);
+                    }
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => resolve(null);
+            });
+        }
+
+        async function idbGet(key) {
+            const db = await openDB();
+            if (!db) return null;
+            return new Promise((resolve) => {
+                const tx = db.transaction(DB_STORE, 'readonly');
+                const store = tx.objectStore(DB_STORE);
+                const req = store.get(key);
+                req.onsuccess = () => resolve(req.result === undefined ? null : req.result);
+                req.onerror = () => resolve(null);
+            });
+        }
+
+        async function idbSet(key, value) {
+            const db = await openDB();
+            if (!db) return false;
+            return new Promise((resolve) => {
+                const tx = db.transaction(DB_STORE, 'readwrite');
+                const store = tx.objectStore(DB_STORE);
+                const req = store.put(value, key);
+                req.onsuccess = () => resolve(true);
+                req.onerror = () => resolve(false);
+            });
+        }
+
+        // UUID and simple hash helpers
+        function simpleUUID() {
+            // simple UUID v4-ish
+            return 'xxxxxx4xxyxx'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0;
+                const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+
+        function simpleHash(str) {
+            // not secure; local-only convenience
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return 'h' + Math.abs(hash).toString(16);
+        }
+
+        function isHashed(str) {
+            return typeof str === 'string' && /^h[0-9a-f]+$/i.test(str);
+        }
+        // Generate a temporary password when imported data lacks one
+        function generateTempPassword() {
+            // 8 chars alphanumeric
+            const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let out = '';
+            for (let i = 0; i < 8; i++) out += chars.charAt(Math.floor(Math.random() * chars.length));
+            return out;
+        }
+
+        // Centralized registry read/write with priority to IndexedDB
+        async function readRegistro() {
+            // try idb
+            const idbVal = await idbGet('registro');
+            if (idbVal) return idbVal;
+            // fallback to localStorage
+            const ls = localStorage.getItem('registro');
+            return ls ? JSON.parse(ls) : null;
+        }
+
+        async function saveRegistro(registro) {
+            // try idb first
+            const ok = await idbSet('registro', registro);
+            try {
+                localStorage.setItem('registro', JSON.stringify(registro));
+            } catch (e) {
+                // ignore
+            }
+            return ok;
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeStorage();
+            setupEventListeners();
+            checkForExistingSession();
+        });
+        // Initialize localStorage with default data if needed
+        async function initializeStorage() {
+            const existing = await readRegistro();
+            if (!existing) {
+                const defaultData = {
+                    admin: {
+                        id: simpleUUID(),
+                        username: 'admin',
+                        password: simpleHash('admin123')
+                    },
+                    teachers: [],
+                    students: [],
+                    topics: [],
+                    results: []
+                };
+                await saveRegistro(defaultData);
+                // DO NOT auto-export users on init to avoid unwanted downloads
+            }
+        }
+        // Setup event listeners
+        function setupEventListeners() {
+            // Student login form
+            document.getElementById('studentLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                studentLogin();
+            });
+            // Teacher login form
+            document.getElementById('teacherLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                teacherLogin();
+            });
+            // Admin login form
+            document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                adminLogin();
+            });
+            // Create topic form
+            document.getElementById('createTopicForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveTopic();
+            });
+            // Mark topic form as dirty on input/change
+            document.getElementById('createTopicForm').addEventListener('input', function() {
+                topicFormDirty = true;
+            });
+            // Add user form
+            document.getElementById('addUserForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                addUser();
+            });
+            // Reset password form
+            document.getElementById('resetPasswordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                resetPassword();
+            });
+            // Change admin password form
+            document.getElementById('changeAdminPasswordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                changeAdminPassword();
+            });
+            // Timer type change
+            document.getElementById('timerType').addEventListener('change', function() {
+                const timeLimitGroup = document.getElementById('timeLimitGroup');
+                if (this.value === 'descending') {
+                    timeLimitGroup.style.display = 'block';
+                } else {
+                    timeLimitGroup.style.display = 'none';
+                }
+            });
+            // Configure timer form
+            document.getElementById('configureTimerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveTimerConfiguration();
+            });
+        }
+
+        // Warn before closing page if topic form has unsaved changes
+        window.addEventListener('beforeunload', function(e) {
+            if (topicFormDirty) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+        // Check for existing session
+        function checkForExistingSession() {
+            const session = sessionStorage.getItem('geoSession');
+            if (session) {
+                const sessionData = JSON.parse(session);
+                currentUser = sessionData.user;
+                currentRole = sessionData.role;
+                showDashboard();
+            }
+        }
+        // Switch between login tabs
+    function switchTab(tabId, ev) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Add active class to selected tab
+            if (ev && ev.currentTarget) ev.currentTarget.classList.add('active');
+        }
+        // Student login
+        function studentLogin() {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                showNotification('Por favor, ingresa tu nombre', 'error');
+                return;
+            }
+            currentUser = studentName;
+            currentRole = 'student';
+            // Save session
+            sessionStorage.setItem('geoSession', JSON.stringify({
+                user: currentUser,
+                role: currentRole
+            }));
+            showDashboard();
+        }
+        // Teacher login
+        async function teacherLogin() {
+            const username = document.getElementById('teacherUsername').value.trim();
+            const password = document.getElementById('teacherPassword').value;
+            if (!username || !password) {
+                showNotification('Por favor, ingresa usuario y contraseña', 'error');
+                return;
+            }
+            const data = await readRegistro();
+            const teacher = (data.teachers || []).find(t => t.username === username && t.password === simpleHash(password));
+            if (!teacher) {
+                showNotification('Usuario o contraseña incorrectos', 'error');
+                return;
+            }
+            currentUser = username;
+            currentRole = 'teacher';
+            // Save session
+            sessionStorage.setItem('geoSession', JSON.stringify({ user: currentUser, role: currentRole }));
+            showDashboard();
+        }
+        // Admin login
+        async function adminLogin() {
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            if (!username || !password) {
+                showNotification('Por favor, ingresa usuario y contraseña', 'error');
+                return;
+            }
+            const data = await readRegistro();
+            if (data.admin.username === username && data.admin.password === simpleHash(password)) {
+                currentUser = username;
+                currentRole = 'admin';
+                // Save session
+                sessionStorage.setItem('geoSession', JSON.stringify({ user: currentUser, role: currentRole }));
+                showDashboard();
+            } else {
+                showNotification('Usuario o contraseña incorrectos', 'error');
+            }
+        }
+        // Show appropriate dashboard based on role
+        function showDashboard() {
+            // Hide login container
+            document.getElementById('loginContainer').style.display = 'none';
+            // Show main content
+            document.getElementById('mainContent').style.display = 'block';
+            // Update user info
+            document.getElementById('userName').textContent = currentUser;
+            document.getElementById('userRole').textContent = `(${currentRole === 'admin' ? 'Administrador' : currentRole === 'teacher' ? 'Profesor' : 'Estudiante'})`;
+            // Hide all dashboards
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('studentDashboard').classList.add('hidden');
+            // Show appropriate dashboard
+            if (currentRole === 'admin') {
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                loadAdminData();
+            } else if (currentRole === 'teacher') {
+                document.getElementById('teacherDashboard').classList.remove('hidden');
+                loadTeacherData();
+            } else if (currentRole === 'student') {
+                document.getElementById('studentDashboard').classList.remove('hidden');
+                loadStudentData();
+            }
+            // Ensure the admin-only "Volver al Administrador" button is hidden for regular teachers/students
+            const adminBackBtn = document.getElementById('adminBackBtn');
+            if (adminBackBtn) {
+                // Only show this button when an admin has explicitly navigated into the teacher panel
+                adminBackBtn.style.display = 'none';
+            }
+        }
+        // Logout
+        function logout() {
+            // Clear session
+            sessionStorage.removeItem('geoSession');
+            // Reset global variables
+            currentUser = null;
+            currentRole = null;
+            currentTopic = null;
+            startTime = null;
+            studentAnswers = [];
+            isDescendingTimer = false;
+            timeLimitInSeconds = 0;
+            timeRemaining = 0;
+            // Stop timer if running
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            // Show login container
+            document.getElementById('loginContainer').style.display = 'block';
+            // Hide main content
+            document.getElementById('mainContent').style.display = 'none';
+            // Reset forms
+            document.getElementById('studentLoginForm').reset();
+            document.getElementById('teacherLoginForm').reset();
+            document.getElementById('adminLoginForm').reset();
+        }
+        // Show notification
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = 'notification ' + type;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        // Load admin data
+        async function loadAdminData() {
+            await loadUsers();
+                    await loadTopics();
+                    // Ensure the embedded teacher view in the admin panel is populated
+                    await loadAdminTeacherPanel();
+        }
+        // Load users for admin
+        async function loadUsers() {
+            const data = await readRegistro();
+            // Load teachers
+            const teachersTableBody = document.getElementById('teachersTableBody');
+            teachersTableBody.innerHTML = '';
+            (data.teachers || []).forEach((teacher) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${teacher.username}</td>
+                    <td>${teacher.subject || ''}</td>
+                    <td>${teacher.province || ''}</td>
+                    <td>${teacher.school || ''}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${teacher.id}')">Eliminar</button>
+                    </td>
+                `;
+                teachersTableBody.appendChild(row);
+            });
+            // Load students
+            const studentsTableBody = document.getElementById('studentsTableBody');
+            studentsTableBody.innerHTML = '';
+            (data.students || []).forEach((student) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${student.name}</td>
+                    <td>${student.username || ''}</td>
+                    <td>${student.grade || ''}</td>
+                    <td>${student.province || ''}</td>
+                    <td>${student.school || ''}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteUser('${student.id}')">Eliminar</button>
+                    </td>
+                `;
+                studentsTableBody.appendChild(row);
+            });
+            // Load import history
+            await loadImportHistory();
+        }
+
+        async function loadImportHistory() {
+            const data = await readRegistro();
+            const list = document.getElementById('importHistoryList');
+            list.innerHTML = '';
+            const history = data.importHistory || [];
+            if (history.length === 0) {
+                list.innerHTML = '<p style="padding:10px;">No hay importaciones registradas.</p>';
+                return;
+            }
+            const ul = document.createElement('ul');
+            ul.style.listStyle = 'none';
+            ul.style.padding = '10px';
+            history.slice().reverse().forEach(h => {
+                const li = document.createElement('li');
+                li.style.borderBottom = '1px solid #eee';
+                li.style.padding = '8px 0';
+                li.innerHTML = `<strong>${new Date(h.timestamp).toLocaleString()}</strong> — Tipo: ${h.type} — Añadidos: ${h.added} — Reemplazados: ${h.replaced} — Ignorados: ${h.ignored}`;
+                ul.appendChild(li);
+            });
+            list.appendChild(ul);
+        }
+        // Load topics for admin
+        async function loadTopics() {
+            const data = await readRegistro();
+            const topicsList = document.getElementById('topicsList');
+            topicsList.innerHTML = '';
+            if (!data.topics || data.topics.length === 0) {
+                topicsList.innerHTML = '<p>No hay temas disponibles. Importa un tema para comenzar.</p>';
+                return;
+            }
+            data.topics.forEach((topic) => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item';
+                topicItem.innerHTML = `
+                    <div class="topic-title">${topic.title}</div>
+                    <div class="topic-actions">
+                        <button class="btn btn-danger btn-sm" onclick="deleteTopic('${topic.id}')">Eliminar</button>
+                    </div>
+                `;
+                topicsList.appendChild(topicItem);
+            });
+        }
+        // Load teacher data
+        async function loadTeacherData() {
+            await loadTeacherTopics();
+            await loadResults();
+        }
+        // Load teacher topics
+        async function loadTeacherTopics() {
+            const data = await readRegistro();
+            const teacherTopicsList = document.getElementById('teacherTopicsList');
+            teacherTopicsList.innerHTML = '';
+            if (!data.topics || data.topics.length === 0) {
+                teacherTopicsList.innerHTML = '<p>No hay temas disponibles. Crea o importa un tema para comenzar.</p>';
+                return;
+            }
+            data.topics.forEach((topic) => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item';
+                topicItem.innerHTML = `
+                    <div class="topic-title">${topic.title}</div>
+                        <div class="topic-actions">
+                            <button class="btn btn-sm" onclick="startEditingTopicAdmin('${topic.id}')">Editar</button>
+                            <button class="btn btn-warning btn-sm" onclick="exportTopicFile('${topic.id}')">Exportar</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteTopic('${topic.id}')">Eliminar</button>
+                            <button class="btn btn-sm" onclick="showConfigureTimerModal('${topic.id}')">Configurar Temporizador</button>
+                        </div>
+                `;
+                teacherTopicsList.appendChild(topicItem);
+            });
+        }
+        // Load admin-embedded teacher panel topics
+        async function loadAdminTeacherPanel() {
+            const data = await readRegistro();
+            const container = document.getElementById('adminTeacherTopicsList');
+            container.innerHTML = '';
+            if (!data.topics || data.topics.length === 0) {
+                container.innerHTML = '<p>No hay temas disponibles.</p>';
+                return;
+            }
+            data.topics.forEach((topic) => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item';
+                topicItem.innerHTML = `
+                    <div class="topic-title">${topic.title}</div>
+                    <div class="topic-actions">
+                        <button class="btn btn-sm" onclick="startEditingTopic('${topic.id}')">Editar</button>
+                        <button class="btn btn-warning btn-sm" onclick="exportTopicFile('${topic.id}')">Exportar</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTopic('${topic.id}')">Eliminar</button>
+                        <button class="btn btn-sm" onclick="showConfigureTimerModal('${topic.id}')">Configurar Temporizador</button>
+                    </div>
+                `;
+                container.appendChild(topicItem);
+            });
+        }
+        // Load results for teacher
+        async function loadResults() {
+            const data = await readRegistro();
+            const resultsTableBody = document.getElementById('resultsTableBody');
+            const topicFilter = document.getElementById('topicFilter');
+            const gradeFilter = document.getElementById('gradeFilter');
+            const provinceFilter = document.getElementById('provinceFilter');
+            const centerFilter = document.getElementById('centerFilter');
+            // Clear table
+            resultsTableBody.innerHTML = '';
+            // Populate topic filter
+            topicFilter.innerHTML = '<option value="">Todos los temas</option>';
+            (data.topics || []).forEach(topic => {
+                const option = document.createElement('option');
+                option.value = topic.title;
+                option.textContent = topic.title;
+                topicFilter.appendChild(option);
+            });
+            // Populate province and center filters
+            const provinces = new Set();
+            const centers = new Set();
+            (data.students || []).forEach(s => {
+                if (s.province) provinces.add(s.province);
+                if (s.school) centers.add(s.school);
+            });
+            provinceFilter.innerHTML = '<option value="">Todas las provincias</option>';
+            centers && (centerFilter.innerHTML = '<option value="">Todos los centros</option>');
+            provinces.forEach(p => {
+                const o = document.createElement('option'); o.value = p; o.textContent = p; provinceFilter.appendChild(o);
+            });
+            centers.forEach(c => {
+                const o = document.createElement('option'); o.value = c; o.textContent = c; centerFilter.appendChild(o);
+            });
+            // Load results
+            if (!data.results || data.results.length === 0) {
+                resultsTableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No hay resultados disponibles</td></tr>';
+                return;
+            }
+            // Sort results: score desc, then time asc (convert MM:SS to seconds)
+            const resultsSorted = (data.results || []).slice().sort((a, b) => {
+                if ((b.score || 0) !== (a.score || 0)) return (b.score || 0) - (a.score || 0);
+                // parse timeSpent "MM:SS"
+                const toSec = t => {
+                    if (!t) return 0;
+                    const parts = t.split(':').map(Number);
+                    if (parts.length === 2) return parts[0]*60 + parts[1];
+                    return Number(t) || 0;
+                };
+                return toSec(a.timeSpent) - toSec(b.timeSpent);
+            });
+            resultsSorted.forEach((result) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.studentName}</td>
+                    <td>${result.studentGrade || ''}</td>
+                    <td>${result.studentProvince || ''}</td>
+                    <td>${result.studentSchool || ''}</td>
+                    <td>${result.topicTitle}</td>
+                    <td>${result.score}</td>
+                    <td class="correct">${result.correctAnswers}</td>
+                    <td class="incorrect">${result.incorrectAnswers}</td>
+                    <td>${result.timeSpent}</td>
+                    <td>${result.Identificador || ''}</td>
+                    <td>${new Date(result.date).toLocaleString()}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteResult('${result.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                resultsTableBody.appendChild(row);
+            });
+        }
+        // Filter results by topic
+        async function filterResults() {
+            const topicFilter = document.getElementById('topicFilter').value;
+            const gradeFilter = document.getElementById('gradeFilter').value;
+            const provinceFilter = document.getElementById('provinceFilter').value;
+            const centerFilter = document.getElementById('centerFilter').value;
+            const data = await readRegistro();
+            const resultsTableBody = document.getElementById('resultsTableBody');
+            // Clear table
+            resultsTableBody.innerHTML = '';
+            // Filter and load results
+            let filteredResults = (data.results || []).slice();
+            if (topicFilter) filteredResults = filteredResults.filter(r => r.topicTitle === topicFilter);
+            if (gradeFilter) filteredResults = filteredResults.filter(r => (r.studentGrade || '') === gradeFilter);
+            if (provinceFilter) filteredResults = filteredResults.filter(r => (r.studentProvince || '') === provinceFilter);
+            if (centerFilter) filteredResults = filteredResults.filter(r => (r.studentSchool || '') === centerFilter);
+            if (filteredResults.length === 0) {
+                resultsTableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No hay resultados disponibles</td></tr>';
+                return;
+            }
+            // Sort same as loadResults
+            const toSec = t => {
+                if (!t) return 0;
+                const parts = t.split(':').map(Number);
+                if (parts.length === 2) return parts[0]*60 + parts[1];
+                return Number(t) || 0;
+            };
+            filteredResults.sort((a,b) => ((b.score||0)-(a.score||0)) || (toSec(a.timeSpent)-toSec(b.timeSpent)));
+            filteredResults.forEach((result) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${result.studentName}</td>
+                    <td>${result.studentGrade || ''}</td>
+                    <td>${result.studentProvince || ''}</td>
+                    <td>${result.studentSchool || ''}</td>
+                    <td>${result.topicTitle}</td>
+                    <td>${result.score}</td>
+                    <td class="correct">${result.correctAnswers}</td>
+                    <td class="incorrect">${result.incorrectAnswers}</td>
+                    <td>${result.timeSpent}</td>
+                    <td>${result.Identificador || ''}</td>
+                    <td>${new Date(result.date).toLocaleString()}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" onclick="deleteResult('${result.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                resultsTableBody.appendChild(row);
+            });
+        }
+        // Load student data
+        async function loadStudentData() {
+            const data = await readRegistro();
+            const studentTopicsList = document.getElementById('studentTopicsList');
+            studentTopicsList.innerHTML = '';
+            if (!data.topics || data.topics.length === 0) {
+                studentTopicsList.innerHTML = '<p>No hay temas disponibles. Por favor, contacta a tu profesor.</p>';
+                return;
+            }
+            data.topics.forEach((topic) => {
+                const topicItem = document.createElement('div');
+                topicItem.className = 'topic-item';
+                topicItem.innerHTML = `
+                    <div class="topic-title">${topic.title}</div>
+                    <div class="topic-actions">
+                        <button class="btn btn-sm" onclick="startTest('${topic.id}')">Comenzar Test</button>
+                    </div>
+                `;
+                studentTopicsList.appendChild(topicItem);
+            });
+        }
+        // Switch admin tabs
+        function switchAdminTab(tabId, ev) {
+            // if topic form has unsaved changes and we're navigating away from createTopicTab, warn
+            if (topicFormDirty && tabId !== 'topicsTab') {
+                if (!confirm('Hay cambios sin guardar en el formulario de tema. ¿Deseas salir sin guardar?')) return;
+                topicFormDirty = false;
+            }
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('#adminDashboard .tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('#adminDashboard .tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab content
+            document.getElementById(tabId).classList.add('active');
+            // Add active class to selected tab
+            if (ev && ev.currentTarget) ev.currentTarget.classList.add('active');
+            // If admin teacher panel requested, load its content
+            if (tabId === 'adminTeacherTab') {
+                loadAdminTeacherPanel();
+            }
+        }
+        // Switch teacher tabs
+        // CORRECCIÓN: Se actualiza la función para manejar el nuevo ID 'topicsContent'
+        function switchTeacherTab(tabId, ev) {
+            // if topic form has unsaved changes and we're navigating away from createTopicTab, warn
+            if (topicFormDirty && tabId !== 'createTopicTab') {
+                if (!confirm('Hay cambios sin guardar en el formulario de tema. ¿Deseas salir sin guardar?')) return;
+                topicFormDirty = false;
+            }
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('#teacherDashboard .tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('#teacherDashboard .tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Show selected tab content
+            // Si se selecciona 'topicsTab', mostramos 'topicsContent'
+            if (tabId === 'topicsTab') {
+                document.getElementById('topicsContent').classList.add('active');
+            } else {
+                document.getElementById(tabId).classList.add('active');
+            }
+            // Add active class to selected tab
+            if (ev && ev.currentTarget) ev.currentTarget.classList.add('active');
+        }
+        // Add question to create topic form
+        function addQuestion() {
+            // recompute questionCount from DOM when needed
+            const existing = document.querySelectorAll('#questionsContainer .question-item').length;
+            questionCount = existing + 1;
+            const questionsContainer = document.getElementById('questionsContainer');
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.innerHTML = `
+                <div class="question-number">Pregunta ${questionCount}</div>
+                <div class="form-group">
+                    <label>Enunciado</label>
+                    <input type="text" class="form-control question-text" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción A</label>
+                    <input type="text" class="form-control option-a" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción B</label>
+                    <input type="text" class="form-control option-b" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción C</label>
+                    <input type="text" class="form-control option-c" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción D</label>
+                    <input type="text" class="form-control option-d" required>
+                </div>
+                <div class="form-group">
+                    <label>Respuesta Correcta</label>
+                    <select class="form-control correct-answer" required>
+                        <option value="">Selecciona...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">Eliminar</button>
+            `;
+            questionsContainer.appendChild(questionItem);
+        }
+        // Admin variant to add question to admin create topic form
+        function addQuestionAdmin() {
+            const existing = document.querySelectorAll('#adminQuestionsContainer .question-item').length;
+            const questionCountAdmin = existing + 1;
+            const questionsContainer = document.getElementById('adminQuestionsContainer');
+            const questionItem = document.createElement('div');
+            questionItem.className = 'question-item';
+            questionItem.innerHTML = `
+                <div class="question-number">Pregunta ${questionCountAdmin}</div>
+                <div class="form-group">
+                    <label>Enunciado</label>
+                    <input type="text" class="form-control question-text" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción A</label>
+                    <input type="text" class="form-control option-a" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción B</label>
+                    <input type="text" class="form-control option-b" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción C</label>
+                    <input type="text" class="form-control option-c" required>
+                </div>
+                <div class="form-group">
+                    <label>Opción D</label>
+                    <input type="text" class="form-control option-d" required>
+                </div>
+                <div class="form-group">
+                    <label>Respuesta Correcta</label>
+                    <select class="form-control correct-answer" required>
+                        <option value="">Selecciona...</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">Eliminar</button>
+            `;
+            questionsContainer.appendChild(questionItem);
+        }
+        // Remove question from create topic form
+        function removeQuestion(button) {
+            button.parentElement.remove();
+            updateQuestionNumbers();
+        }
+        // Update question numbers after removing a question
+        function updateQuestionNumbers() {
+            const questionItems = document.querySelectorAll('.question-item');
+            questionItems.forEach((item, index) => {
+                item.querySelector('.question-number').textContent = `Pregunta ${index + 1}`;
+            });
+            questionCount = questionItems.length;
+        }
+        // Save topic
+        async function saveTopic() {
+            const title = document.getElementById('topicTitle').value.trim();
+            if (!title) {
+                showNotification('Por favor, ingresa un título para el tema', 'error');
+                return;
+            }
+            const questionItems = document.querySelectorAll('#questionsContainer .question-item');
+            if (questionItems.length === 0) {
+                showNotification('Por favor, agrega al menos una pregunta', 'error');
+                return;
+            }
+            const questions = [];
+            for (let i = 0; i < questionItems.length; i++) {
+                const item = questionItems[i];
+                const text = item.querySelector('.question-text').value.trim();
+                const optionA = item.querySelector('.option-a').value.trim();
+                const optionB = item.querySelector('.option-b').value.trim();
+                const optionC = item.querySelector('.option-c').value.trim();
+                const optionD = item.querySelector('.option-d').value.trim();
+                const correctAnswer = item.querySelector('.correct-answer').value;
+                if (!text || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+                    showNotification('Por favor, completa todos los campos de preguntas', 'error');
+                    return;
+                }
+                questions.push({
+                    text: text,
+                    options: [optionA, optionB, optionC, optionD],
+                    correctAnswer: correctAnswer
+                });
+            }
+            const topic = {
+                id: editingTopicId || simpleUUID(),
+                title: title,
+                questions: questions,
+                timerConfig: {
+                    type: 'ascending', // ascending or descending
+                    limitMinutes: 30 // default value
+                }
+            };
+            // Save to registro
+            const data = await readRegistro();
+            if (!data.topics) data.topics = [];
+            if (editingTopicId) {
+                // overwrite existing topic by id
+                const idx = data.topics.findIndex(t => t.id === editingTopicId);
+                if (idx !== -1) data.topics[idx] = topic;
+            } else {
+                data.topics.push(topic);
+            }
+            await saveRegistro(data);
+            // Export to .geo file for convenience
+            exportTopicFile(topic.id);
+            showNotification('Tema guardado correctamente', 'success');
+            // Reset form
+            document.getElementById('createTopicForm').reset();
+            document.getElementById('questionsContainer').innerHTML = `
+                <h3>Preguntas</h3>
+                <div class="question-item">
+                    <div class="question-number">Pregunta 1</div>
+                    <div class="form-group">
+                        <label>Enunciado</label>
+                        <input type="text" class="form-control question-text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción A</label>
+                        <input type="text" class="form-control option-a" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción B</label>
+                        <input type="text" class="form-control option-b" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción C</label>
+                        <input type="text" class="form-control option-c" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción D</label>
+                        <input type="text" class="form-control option-d" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Respuesta Correcta</label>
+                        <select class="form-control correct-answer" required>
+                            <option value="">Selecciona...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            questionCount = 1;
+            editingTopicId = null;
+            topicFormDirty = false;
+            // hide cancel button if visible
+            const cancelBtn = document.getElementById('cancelEditBtn'); if (cancelBtn) cancelBtn.style.display = 'none';
+            // Reload topics
+            if (currentRole === 'admin') {
+                await loadTopics();
+            } else if (currentRole === 'teacher') {
+                await loadTeacherTopics();
+            }
+        }
+
+        function cancelTopicEdit() {
+            editingTopicId = null;
+            document.getElementById('createTopicForm').reset();
+            document.getElementById('questionsContainer').innerHTML = `
+                <h3>Preguntas</h3>
+                <div class="question-item">
+                    <div class="question-number">Pregunta 1</div>
+                    <div class="form-group">
+                        <label>Enunciado</label>
+                        <input type="text" class="form-control question-text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción A</label>
+                        <input type="text" class="form-control option-a" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción B</label>
+                        <input type="text" class="form-control option-b" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción C</label>
+                        <input type="text" class="form-control option-c" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción D</label>
+                        <input type="text" class="form-control option-d" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Respuesta Correcta</label>
+                        <select class="form-control correct-answer" required>
+                            <option value="">Selecciona...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            const cancelBtn = document.getElementById('cancelEditBtn'); if (cancelBtn) cancelBtn.style.display = 'none';
+        }
+
+        // Admin-side save topic (create or overwrite admin editingTopicIdAdmin)
+        let editingTopicIdAdmin = null;
+        async function saveTopicAdmin() {
+            const title = document.getElementById('adminTopicTitle').value.trim();
+            if (!title) { showNotification('Por favor, ingresa un título para el tema', 'error'); return; }
+            const questionItems = document.querySelectorAll('#adminQuestionsContainer .question-item');
+            if (questionItems.length === 0) { showNotification('Por favor, agrega al menos una pregunta', 'error'); return; }
+            const questions = [];
+            for (let i = 0; i < questionItems.length; i++) {
+                const item = questionItems[i];
+                const text = item.querySelector('.question-text').value.trim();
+                const optionA = item.querySelector('.option-a').value.trim();
+                const optionB = item.querySelector('.option-b').value.trim();
+                const optionC = item.querySelector('.option-c').value.trim();
+                const optionD = item.querySelector('.option-d').value.trim();
+                const correctAnswer = item.querySelector('.correct-answer').value;
+                if (!text || !optionA || !optionB || !optionC || !optionD || !correctAnswer) { showNotification('Por favor, completa todos los campos de preguntas', 'error'); return; }
+                questions.push({ text: text, options: [optionA, optionB, optionC, optionD], correctAnswer: correctAnswer });
+            }
+            const topic = { id: editingTopicIdAdmin || simpleUUID(), title: title, questions: questions, timerConfig: { type: 'ascending', limitMinutes: 30 } };
+            const data = await readRegistro();
+            if (!data.topics) data.topics = [];
+            if (editingTopicIdAdmin) {
+                const idx = data.topics.findIndex(t => t.id === editingTopicIdAdmin);
+                if (idx !== -1) data.topics[idx] = topic;
+            } else {
+                data.topics.push(topic);
+            }
+            await saveRegistro(data);
+            exportTopicFile(topic.id);
+            showNotification('Tema guardado correctamente (admin)', 'success');
+            // reset admin form
+            document.getElementById('adminCreateTopicForm').reset();
+            document.getElementById('adminQuestionsContainer').innerHTML = `
+                <h3>Preguntas</h3>
+                <div class="question-item">
+                    <div class="question-number">Pregunta 1</div>
+                    <div class="form-group">
+                        <label>Enunciado</label>
+                        <input type="text" class="form-control question-text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción A</label>
+                        <input type="text" class="form-control option-a" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción B</label>
+                        <input type="text" class="form-control option-b" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción C</label>
+                        <input type="text" class="form-control option-c" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción D</label>
+                        <input type="text" class="form-control option-d" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Respuesta Correcta</label>
+                        <select class="form-control correct-answer" required>
+                            <option value="">Selecciona...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            editingTopicIdAdmin = null;
+            document.getElementById('cancelEditAdminBtn').style.display = 'none';
+            await loadTopics();
+            await loadTeacherTopics();
+            await loadAdminTeacherPanel();
+        }
+
+        function startEditingTopicAdmin(topicId) {
+            // populate admin form with topic
+            startEditingTopic(topicId); // also populate teacher form for convenience
+            const dataPromise = readRegistro();
+            dataPromise.then(data => {
+                const topic = (data.topics || []).find(t => t.id === topicId);
+                if (!topic) return;
+                document.getElementById('adminTopicTitle').value = topic.title;
+                const container = document.getElementById('adminQuestionsContainer');
+                container.innerHTML = '<h3>Preguntas</h3>';
+                topic.questions.forEach((question, i) => {
+                    const questionItem = document.createElement('div');
+                    questionItem.className = 'question-item';
+                    questionItem.innerHTML = `
+                        <div class="question-number">Pregunta ${i + 1}</div>
+                        <div class="form-group">
+                            <label>Enunciado</label>
+                            <input type="text" class="form-control question-text" value="${question.text}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Opción A</label>
+                            <input type="text" class="form-control option-a" value="${question.options[0]}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Opción B</label>
+                            <input type="text" class="form-control option-b" value="${question.options[1]}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Opción C</label>
+                            <input type="text" class="form-control option-c" value="${question.options[2]}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Opción D</label>
+                            <input type="text" class="form-control option-d" value="${question.options[3]}" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Respuesta Correcta</label>
+                            <select class="form-control correct-answer" required>
+                                <option value="">Selecciona...</option>
+                                <option value="A" ${question.correctAnswer === 'A' ? 'selected' : ''}>A</option>
+                                <option value="B" ${question.correctAnswer === 'B' ? 'selected' : ''}>B</option>
+                                <option value="C" ${question.correctAnswer === 'C' ? 'selected' : ''}>C</option>
+                                <option value="D" ${question.correctAnswer === 'D' ? 'selected' : ''}>D</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">Eliminar</button>
+                    `;
+                    container.appendChild(questionItem);
+                });
+                editingTopicIdAdmin = topic.id;
+                document.getElementById('cancelEditAdminBtn').style.display = 'inline-block';
+                showNotification('Tema cargado para edición (admin). Guarda los cambios cuando termines.', 'success');
+            });
+        }
+
+        function cancelEditAdmin() {
+            editingTopicIdAdmin = null;
+            document.getElementById('adminCreateTopicForm').reset();
+            document.getElementById('adminQuestionsContainer').innerHTML = `
+                <h3>Preguntas</h3>
+                <div class="question-item">
+                    <div class="question-number">Pregunta 1</div>
+                    <div class="form-group">
+                        <label>Enunciado</label>
+                        <input type="text" class="form-control question-text" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción A</label>
+                        <input type="text" class="form-control option-a" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción B</label>
+                        <input type="text" class="form-control option-b" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción C</label>
+                        <input type="text" class="form-control option-c" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción D</label>
+                        <input type="text" class="form-control option-d" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Respuesta Correcta</label>
+                        <select class="form-control correct-answer" required>
+                            <option value="">Selecciona...</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+            document.getElementById('cancelEditAdminBtn').style.display = 'none';
+        }
+        // Export current topic from form
+        function exportCurrentTopic() {
+            // Export what is currently in the form (no saves)
+            const title = document.getElementById('topicTitle').value.trim();
+            if (!title) {
+                showNotification('Por favor, ingresa un título para el tema', 'error');
+                return;
+            }
+            const questionItems = document.querySelectorAll('#questionsContainer .question-item');
+            if (questionItems.length === 0) {
+                showNotification('Por favor, agrega al menos una pregunta', 'error');
+                return;
+            }
+            const questions = [];
+            for (let i = 0; i < questionItems.length; i++) {
+                const item = questionItems[i];
+                const text = item.querySelector('.question-text').value.trim();
+                const optionA = item.querySelector('.option-a').value.trim();
+                const optionB = item.querySelector('.option-b').value.trim();
+                const optionC = item.querySelector('.option-c').value.trim();
+                const optionD = item.querySelector('.option-d').value.trim();
+                const correctAnswer = item.querySelector('.correct-answer').value;
+                if (!text || !optionA || !optionB || !optionC || !optionD || !correctAnswer) {
+                    showNotification('Por favor, completa todos los campos de preguntas', 'error');
+                    return;
+                }
+                questions.push({
+                    text: text,
+                    options: [optionA, optionB, optionC, optionD],
+                    correctAnswer: correctAnswer
+                });
+            }
+            const topic = {
+                id: simpleUUID(),
+                title: title,
+                questions: questions,
+                timerConfig: {
+                    type: 'ascending',
+                    limitMinutes: 30
+                }
+            };
+            // Export to .geo file
+            const dataStr = JSON.stringify(topic, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = `${topic.title.replace(/\s+/g, '_')}.geo`;
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showNotification('Tema exportado correctamente', 'success');
+        }
+        // Export topic file
+        async function exportTopicFile(topicId) {
+            const data = await readRegistro();
+            const topic = (data.topics || []).find(t => t.id === topicId);
+            if (!topic) { showNotification('Tema no encontrado', 'error'); return; }
+            const dataStr = JSON.stringify(topic, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = `${topic.title.replace(/\s+/g, '_')}.geo`;
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showNotification('Tema exportado correctamente', 'success');
+        }
+        // Export users file
+        async function exportUsers() {
+            // confirm before exporting users
+            if (!confirm('¿Deseas exportar los usuarios? Este archivo contendrá nombres de usuario (no contraseñas en texto).')) return;
+            const data = await readRegistro();
+            // Export including hashed passwords so imports can restore login without exposing plaintext
+            const usersData = {
+                admin: { id: data.admin.id, username: data.admin.username, password: data.admin.password },
+                teachers: (data.teachers || []).map(t => ({ id: t.id, username: t.username, password: t.password || '', subject: t.subject || '', province: t.province || '', school: t.school || '' })),
+                students: (data.students || []).map(s => ({ id: s.id, username: s.username, password: s.password || '', name: s.name, grade: s.grade || '', province: s.province || '', school: s.school || '' }))
+            };
+            const dataStr = JSON.stringify(usersData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'usuarios.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showNotification('Usuarios exportados correctamente (sin contraseñas).', 'success');
+        }
+        // Export all data (users, results, import history, etc.) excluding topics
+        async function exportAllData() {
+            if (!confirm('¿Deseas exportar todos los datos (usuarios, resultados, historial)? Los temas NO se incluirán en este archivo.')) return;
+            const data = await readRegistro();
+            const exportObj = Object.assign({}, data);
+            // exclude topics (they are exported/imported individually)
+            delete exportObj.topics;
+            const dataStr = JSON.stringify(exportObj, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'geo_all_data.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showNotification('Datos exportados correctamente (sin temas).', 'success');
+        }
+
+        // Import all data (merge users, results, history), but do NOT import topics from this file
+        function importAllData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const payload = JSON.parse(e.target.result);
+                    // Validate basic structure
+                    if (typeof payload !== 'object') throw new Error('Formato inválido');
+                    const data = await readRegistro();
+                    // Prepare history entry
+                    const historyEntry = { timestamp: new Date().toISOString(), type: 'import_all', added: 0, replaced: 0, ignored: 0, details: [] };
+                    // Merge admin if present (prompt if different)
+                    if (payload.admin && payload.admin.username && payload.admin.username !== data.admin.username) {
+                        const pending = { type: 'users', items: [ { kind: 'admin', username: payload.admin.username, password: payload.admin.password || '', display: `Administrador: ${payload.admin.username}`, note: 'Administrador diferente' } ] };
+                        showImportSummaryModal(pending);
+                    }
+                    // Merge teachers (hash imported passwords; generate temporary password if missing)
+                    if (Array.isArray(payload.teachers)) {
+                        data.teachers = data.teachers || [];
+                        for (let t of payload.teachers) {
+                            const exists = data.teachers.find(x => x.username === t.username);
+                            if (exists) {
+                                historyEntry.ignored++;
+                                historyEntry.details.push({ action: 'ignored_teacher', username: t.username });
+                                continue;
+                            }
+                            let tempPass = null;
+                            let hashed = '';
+                            if (t.password && String(t.password).trim()) {
+                                // if incoming password is already hashed, preserve it
+                                if (isHashed(t.password)) {
+                                    hashed = t.password;
+                                } else {
+                                    hashed = simpleHash(t.password);
+                                }
+                            } else {
+                                tempPass = generateTempPassword();
+                                hashed = simpleHash(tempPass);
+                            }
+                            data.teachers.push({ id: t.id || simpleUUID(), username: t.username, password: hashed, subject: t.subject || '', province: t.province || '', school: t.school || '' });
+                            historyEntry.added++;
+                            const detail = { action: 'added_teacher', username: t.username };
+                            if (tempPass) detail.tempPassword = tempPass;
+                            historyEntry.details.push(detail);
+                        }
+                    }
+                    // Merge students (hash imported passwords; generate temp if missing)
+                    if (Array.isArray(payload.students)) {
+                        data.students = data.students || [];
+                        for (let s of payload.students) {
+                            const exists = data.students.find(x => x.username === s.username);
+                            if (exists) {
+                                historyEntry.ignored++;
+                                historyEntry.details.push({ action: 'ignored_student', username: s.username });
+                                continue;
+                            }
+                            let tempPass = null;
+                            let hashed = '';
+                            if (s.password && String(s.password).trim()) {
+                                if (isHashed(s.password)) {
+                                    hashed = s.password;
+                                } else {
+                                    hashed = simpleHash(s.password);
+                                }
+                            } else {
+                                tempPass = generateTempPassword();
+                                hashed = simpleHash(tempPass);
+                            }
+                            data.students.push({ id: s.id || simpleUUID(), username: s.username, password: hashed, name: s.name || '', grade: s.grade || '', province: s.province || '', school: s.school || '' });
+                            historyEntry.added++;
+                            const detail = { action: 'added_student', username: s.username };
+                            if (tempPass) detail.tempPassword = tempPass;
+                            historyEntry.details.push(detail);
+                        }
+                    }
+                    // Merge results
+                    if (Array.isArray(payload.results)) {
+                        data.results = data.results || [];
+                        for (let r of payload.results) {
+                            // Keep unique by id if present
+                            if (r.id && data.results.find(x => x.id === r.id)) { historyEntry.ignored++; historyEntry.details.push({ action: 'ignored_result', id: r.id }); continue; }
+                            r.id = r.id || simpleUUID();
+                            data.results.push(r);
+                            historyEntry.added++;
+                            historyEntry.details.push({ action: 'added_result', id: r.id });
+                        }
+                    }
+                    // Merge import history (append)
+                    if (Array.isArray(payload.importHistory)) {
+                        data.importHistory = data.importHistory || [];
+                        payload.importHistory.forEach(h => data.importHistory.push(h));
+                    }
+                    // Save and record our summary
+                    data.importHistory = data.importHistory || [];
+                    data.importHistory.push(historyEntry);
+                    await saveRegistro(data);
+                    // If any temporary passwords were generated, show them in a modal for admin to copy
+                    const temps = historyEntry.details.filter(d => d.tempPassword).map(d => ({ username: d.username || d.item || d.id, tempPassword: d.tempPassword }));
+                    if (temps.length > 0) {
+                        showTempPasswordsModal(temps);
+                    }
+                    showNotification('Datos importados correctamente (temas fuera). Revisa el Historial de Importaciones.', 'success');
+                    if (currentRole === 'admin') await loadUsers();
+                } catch (err) {
+                    showNotification('Error al importar datos: '+err.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+        // Import topic
+        function importTopic(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const raw = JSON.parse(e.target.result);
+                    if (!raw.title || !raw.questions || !Array.isArray(raw.questions)) {
+                        throw new Error('Formato de archivo inválido');
+                    }
+                    // Validate each question has the required structure
+                    for (let i = 0; i < raw.questions.length; i++) {
+                        const question = raw.questions[i];
+                        if (!question.text || !question.options || !Array.isArray(question.options) || 
+                            question.options.length !== 4 || !question.correctAnswer) {
+                            throw new Error(`La pregunta ${i+1} no tiene el formato correcto`);
+                        }
+                    }
+                    // Assign id and timerConfig if missing
+                    const topic = Object.assign({}, raw);
+                    topic.id = topic.id || simpleUUID();
+                    if (!topic.timerConfig) topic.timerConfig = { type: 'ascending', limitMinutes: 30 };
+
+                    const data = await readRegistro();
+                    data.topics = data.topics || [];
+                    // duplicate detection by title
+                    const existing = data.topics.find(t => t.title === topic.title);
+                    if (existing) {
+                        // open import summary modal to let user decide
+                        const pending = { type: 'topics', items: [ Object.assign({}, topic, { display: topic.title, note: `Existe un tema con este título.` }) ] };
+                        showImportSummaryModal(pending);
+                    } else {
+                        data.topics.push(topic);
+                        await saveRegistro(data);
+                        showNotification('Tema importado correctamente', 'success');
+                        if (currentRole === 'admin') {
+                            await loadTopics();
+                        } else if (currentRole === 'teacher') {
+                            await loadTeacherTopics();
+                        }
+                    }
+                } catch (error) {
+                    showNotification('Error al importar el tema: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            // Reset file input
+            event.target.value = '';
+        }
+        // Import users
+        function importUsers(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const usersData = JSON.parse(e.target.result);
+                    if (!usersData.admin || !usersData.teachers || !usersData.students) {
+                        throw new Error('Formato de archivo inválido');
+                    }
+                    const data = await readRegistro();
+                    // Build pending items; include admin as pending if different
+                    const pendingItems = [];
+                    if (usersData.admin && usersData.admin.username && usersData.admin.username !== data.admin.username) {
+                        pendingItems.push(Object.assign({}, { kind: 'admin', username: usersData.admin.username, password: usersData.admin.password || '', display: `Administrador: ${usersData.admin.username}`, note: 'Administrador diferente' }));
+                    }
+                    data.teachers = data.teachers || [];
+                    // Validate and prepare teachers
+                    const userImportHistory = { timestamp: new Date().toISOString(), type: 'import_users', added: 0, replaced: 0, ignored: 0, details: [] };
+                    for (let teacher of usersData.teachers) {
+                        // basic subject validation (string) - not enforced strictly
+                        const note = [];
+                        if (!teacher.subject) note.push('Asignatura faltante');
+                        if (teacher.grade) note.push('Campo grado no aplicable a profesor');
+                        const existing = data.teachers.find(t => t.username === teacher.username);
+                        if (existing) {
+                            pendingItems.push(Object.assign({}, { kind: 'teacher', username: teacher.username, password: teacher.password, subject: teacher.subject || '', province: teacher.province || '', school: teacher.school || '', display: `Profesor: ${teacher.username}`, note: note.join('; ') }));
+                        } else {
+                            let tempPass = null;
+                            let hashed = '';
+                            if (teacher.password && String(teacher.password).trim()) {
+                                hashed = isHashed(teacher.password) ? teacher.password : simpleHash(teacher.password);
+                            } else {
+                                tempPass = generateTempPassword();
+                                hashed = simpleHash(tempPass);
+                            }
+                            data.teachers.push({ id: simpleUUID(), username: teacher.username, password: hashed, subject: teacher.subject || '', province: teacher.province || '', school: teacher.school || '' });
+                            userImportHistory.added++;
+                            const d = { action: 'added_teacher', username: teacher.username };
+                            if (tempPass) d.tempPassword = tempPass;
+                            userImportHistory.details.push(d);
+                        }
+                    }
+                    // process students with grade validation
+                    data.students = data.students || [];
+                    for (let student of usersData.students) {
+                        const validGrades = ['9','10','11','12',''];
+                        const note = [];
+                        if (student.grade && !validGrades.includes(String(student.grade))) note.push('Grado inválido');
+                        const existing = data.students.find(s => s.username === student.username);
+                        if (existing) {
+                            pendingItems.push(Object.assign({}, { kind: 'student', username: student.username, password: student.password, name: student.name, grade: student.grade || '', province: student.province || '', school: student.school || '', display: `Estudiante: ${student.username}`, note: note.join('; ') }));
+                        } else {
+                            let tempPass = null;
+                            let hashed = '';
+                            if (student.password && String(student.password).trim()) {
+                                hashed = isHashed(student.password) ? student.password : simpleHash(student.password);
+                            } else {
+                                tempPass = generateTempPassword();
+                                hashed = simpleHash(tempPass);
+                            }
+                            data.students.push({ id: simpleUUID(), username: student.username, password: hashed, name: student.name, grade: student.grade || '', province: student.province || '', school: student.school || '' });
+                            userImportHistory.added++;
+                            const d = { action: 'added_student', username: student.username };
+                            if (tempPass) d.tempPassword = tempPass;
+                            userImportHistory.details.push(d);
+                        }
+                    }
+                    if (userImportHistory.added > 0) {
+                        data.importHistory = data.importHistory || [];
+                        data.importHistory.push(userImportHistory);
+                        // show temp passwords modal if generated
+                        const temps = userImportHistory.details.filter(d => d.tempPassword).map(d => ({ username: d.username, tempPassword: d.tempPassword }));
+                        if (temps.length > 0) showTempPasswordsModal(temps);
+                    }
+                    if (pendingItems.length > 0) {
+                        const pending = { type: 'users', items: pendingItems };
+                        showImportSummaryModal(pending);
+                    } else {
+                        await saveRegistro(data);
+                        showNotification('Usuarios importados correctamente', 'success');
+                        if (currentRole === 'admin') await loadUsers();
+                    }
+                } catch (error) {
+                    showNotification('Error al importar los usuarios: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            // Reset file input
+            event.target.value = '';
+        }
+        // Delete topic
+        async function deleteTopic(topicId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este tema?')) return;
+            const data = await readRegistro();
+            data.topics = (data.topics || []).filter(t => t.id !== topicId);
+            await saveRegistro(data);
+            showNotification('Tema eliminado correctamente', 'success');
+            if (currentRole === 'admin') {
+                await loadTopics();
+            } else if (currentRole === 'teacher') {
+                await loadTeacherTopics();
+            }
+        }
+        // Show configure timer modal
+        async function showConfigureTimerModal(topicId) {
+            const data = await readRegistro();
+            const topic = (data.topics || []).find(t => t.id === topicId);
+            if (!topic) { showNotification('Tema no encontrado', 'error'); return; }
+            // Store topic id in session storage for later use
+            sessionStorage.setItem('currentTopicId', topicId);
+            // Populate form
+            const timerType = document.getElementById('timerType');
+            const timeLimitMinutes = document.getElementById('timeLimitMinutes');
+            timerType.value = topic.timerConfig.type;
+            timeLimitMinutes.value = topic.timerConfig.limitMinutes;
+            // Show/hide time limit field
+            const timeLimitGroup = document.getElementById('timeLimitGroup');
+            if (topic.timerConfig.type === 'descending') {
+                timeLimitGroup.style.display = 'block';
+            } else {
+                timeLimitGroup.style.display = 'none';
+            }
+            // Show modal
+            document.getElementById('configureTimerModal').style.display = 'flex';
+        }
+        // Save timer configuration
+        async function saveTimerConfiguration() {
+            const topicId = sessionStorage.getItem('currentTopicId');
+            const timerType = document.getElementById('timerType').value;
+            const timeLimitMinutes = parseInt(document.getElementById('timeLimitMinutes').value);
+            const data = await readRegistro();
+            const topic = (data.topics || []).find(t => t.id === topicId);
+            if (!topic) { showNotification('Tema no encontrado', 'error'); return; }
+            topic.timerConfig = { type: timerType, limitMinutes: timeLimitMinutes };
+            await saveRegistro(data);
+            closeModal('configureTimerModal');
+            showNotification('Configuración del temporizador guardada correctamente', 'success');
+        }
+        // Start test for student
+        async function startTest(topicId) {
+            const data = await readRegistro();
+            currentTopic = (data.topics || []).find(t => t.id === topicId);
+            studentAnswers = [];
+            // Show test container
+            document.getElementById('studentTopicsSelection').classList.add('hidden');
+            document.getElementById('studentTestContainer').classList.remove('hidden');
+            // Set topic title
+            document.getElementById('currentTopicTitle').textContent = currentTopic.title;
+            // Load questions - CORREGIDO: Se usa el nuevo ID 'studentQuestionsContainer'
+            const questionsContainer = document.getElementById('studentQuestionsContainer');
+            questionsContainer.innerHTML = '';
+            currentTopic.questions.forEach((question, index) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                let optionsHtml = '';
+                question.options.forEach((option, optIndex) => {
+                    const optionLetter = String.fromCharCode(65 + optIndex); // A, B, C, D
+                    optionsHtml += `
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="question-${index}" id="question-${index}-option-${optIndex}" value="${optionLetter}">
+                            <label class="form-check-label" for="question-${index}-option-${optIndex}">
+                                ${optionLetter}. ${option}
+                            </label>
+                        </div>
+                    `;
+                });
+                questionItem.innerHTML = `
+                    <div class="question-number">Pregunta ${index + 1}</div>
+                    <div class="form-group">
+                        <label>${question.text}</label>
+                        ${optionsHtml}
+                    </div>
+                `;
+                questionsContainer.appendChild(questionItem);
+            });
+            // Initialize timer based on topic configuration
+            isDescendingTimer = currentTopic.timerConfig.type === 'descending';
+            timeLimitInSeconds = currentTopic.timerConfig.limitMinutes * 60;
+            if (isDescendingTimer) {
+                timeRemaining = timeLimitInSeconds;
+                document.getElementById('timer').textContent = formatTime(timeRemaining);
+                timerInterval = setInterval(updateDescendingTimer, 1000);
+            } else {
+                startTime = Date.now();
+                timerInterval = setInterval(updateAscendingTimer, 1000);
+            }
+        }
+        // Admin back from teacher panel
+        function backToAdmin() {
+            document.getElementById('teacherDashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            const adminBackBtn = document.getElementById('adminBackBtn');
+            if (adminBackBtn) adminBackBtn.style.display = 'none';
+        }
+
+        // Admin -> open the teacher panel, load teacher data and reveal admin-only back button
+        async function goToTeacherPanelFromAdmin() {
+            // show teacher dashboard and hide admin dashboard
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('teacherDashboard').classList.remove('hidden');
+            // load teacher-specific data (topics/results)
+            await loadTeacherData();
+            // reveal the admin-only back button so admin can return
+            const adminBackBtn = document.getElementById('adminBackBtn');
+            if (adminBackBtn) adminBackBtn.style.display = 'inline-block';
+        }
+        // Update ascending timer (original behavior)
+        function updateAscendingTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('timer').textContent = formatTime(elapsed);
+        }
+        // Update descending timer (new behavior)
+        function updateDescendingTimer() {
+            timeRemaining--;
+            document.getElementById('timer').textContent = formatTime(timeRemaining);
+            // Auto-submit when time runs out
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                submitTest(true); // Pass true to indicate auto-submission
+            }
+        }
+        // Format time to MM:SS
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        // Submit test
+        async function submitTest(isAutoSubmit = false) {
+            // Check if all questions are answered (only if not auto-submit)
+            if (!isAutoSubmit) {
+                let allAnswered = true;
+                currentTopic.questions.forEach((question, index) => {
+                    const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                    if (!selectedOption) {
+                        allAnswered = false;
+                    }
+                });
+                if (!allAnswered) {
+                    if (!confirm('No has respondido todas las preguntas. ¿Deseas continuar de todas formas?')) {
+                        return;
+                    }
+                }
+            }
+            // Stop timer
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            // Calculate time spent
+            let timeSpent;
+            if (isAutoSubmit) {
+                // Use the full configured time limit
+                timeSpent = formatTime(timeLimitInSeconds);
+            } else {
+                // Use actual elapsed time
+                if (isDescendingTimer) {
+                    const actualElapsedSeconds = timeLimitInSeconds - timeRemaining;
+                    timeSpent = formatTime(actualElapsedSeconds);
+                } else {
+                    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                    timeSpent = formatTime(elapsed);
+                }
+            }
+            // Collect answers
+            let correctCount = 0;
+            let incorrectCount = 0;
+            currentTopic.questions.forEach((question, index) => {
+                const selectedOption = document.querySelector(`input[name="question-${index}"]:checked`);
+                const studentAnswer = selectedOption ? selectedOption.value : '';
+                studentAnswers.push({
+                    questionIndex: index,
+                    question: question.text,
+                    studentAnswer: studentAnswer,
+                    correctAnswer: question.correctAnswer,
+                    options: question.options
+                });
+                if (studentAnswer === question.correctAnswer) {
+                    correctCount++;
+                } else {
+                    incorrectCount++;
+                }
+            });
+            // Calculate score
+            const score = Math.round((correctCount / currentTopic.questions.length) * 100);
+            // Save result
+            // Find student info to attach grade/province/school
+            const data = await readRegistro();
+            const student = (data.students || []).find(s => s.username === currentUser);
+            const studentId = student ? student.id : null;
+            const studentGrade = student ? (student.grade || '') : '';
+            const studentProvince = student ? (student.province || '') : '';
+            const studentSchool = student ? (student.school || '') : '';
+
+            const result = {
+                id: simpleUUID(),
+                studentId: studentId,
+                studentName: currentUser,
+                studentGrade: studentGrade,
+                studentProvince: studentProvince,
+                studentSchool: studentSchool,
+                topicId: currentTopic.id,
+                topicTitle: currentTopic.title,
+                score: score,
+                correctAnswers: correctCount,
+                incorrectAnswers: incorrectCount,
+                timeSpent: timeSpent,
+                date: new Date().toISOString()
+            };
+            data.results = data.results || [];
+            data.results.push(result);
+            await saveRegistro(data);
+            // store last result id for modal
+            lastResultId = result.id;
+            // Show results
+            showResults(score, correctCount, incorrectCount, timeSpent);
+        }
+        // Show results
+        function showResults(score, correctCount, incorrectCount, timeSpent) {
+            // Hide test container
+            document.getElementById('studentTestContainer').classList.add('hidden');
+            // Show results container
+            document.getElementById('studentResultsContainer').classList.remove('hidden');
+            // Scroll to top so student can start reviewing from the top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Update results summary
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('correctCount').textContent = correctCount;
+            document.getElementById('incorrectCount').textContent = incorrectCount;
+            document.getElementById('timeSpent').textContent = timeSpent;
+            // Load answers review
+            const answersReview = document.getElementById('answersReview');
+            answersReview.innerHTML = '<h3>Revisión de Respuestas</h3>';
+            studentAnswers.forEach(answer => {
+                const answerItem = document.createElement('div');
+                answerItem.className = 'question-item';
+                const isCorrect = answer.studentAnswer === answer.correctAnswer;
+                let optionsHtml = '';
+                answer.options.forEach((option, optIndex) => {
+                    const optionLetter = String.fromCharCode(65 + optIndex); // A, B, C, D
+                    const isStudentAnswer = answer.studentAnswer === optionLetter;
+                    const isCorrectAnswer = answer.correctAnswer === optionLetter;
+                    let optionClass = '';
+                    if (isStudentAnswer && isCorrectAnswer) {
+                        optionClass = 'correct';
+                    } else if (isStudentAnswer && !isCorrectAnswer) {
+                        optionClass = 'incorrect';
+                    } else if (isCorrectAnswer) {
+                        optionClass = 'correct';
+                    }
+                    optionsHtml += `<div class="${optionClass}">${optionLetter}. ${option}</div>`;
+                });
+                answerItem.innerHTML = `
+                    <div class="question-number">Pregunta ${answer.questionIndex + 1}</div>
+                    <div><strong>${answer.question}</strong></div>
+                    <div>
+                        ${optionsHtml}
+                    </div>
+                    <div>Tu respuesta: <span class="${isCorrect ? 'correct' : 'incorrect'}">${answer.studentAnswer || 'Sin respuesta'}</span></div>
+                    <div>Respuesta correcta: <span class="correct">${answer.correctAnswer}</span></div>
+                `;
+                answersReview.appendChild(answerItem);
+            });
+        }
+        // Back to topics selection
+        function backToTopics() {
+            // Hide results container
+            document.getElementById('studentResultsContainer').classList.add('hidden');
+            // Show topics selection
+            document.getElementById('studentTopicsSelection').classList.remove('hidden');
+            // Reset variables
+            currentTopic = null;
+            studentAnswers = [];
+            isDescendingTimer = false;
+            timeLimitInSeconds = 0;
+            timeRemaining = 0;
+        }
+        // Show add user modal
+        function showAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+            // ensure fields visibility matches current selection
+            toggleStudentNameField();
+        }
+        // Show reset password modal
+        function showResetPasswordModal() {
+            document.getElementById('resetPasswordModal').style.display = 'flex';
+        }
+        // Show change admin password modal
+        function showChangeAdminPasswordModal() {
+            document.getElementById('changeAdminPasswordModal').style.display = 'flex';
+        }
+        // Show clear storage modal
+        function clearLocalStorage() {
+            document.getElementById('clearStorageModal').style.display = 'flex';
+        }
+        // Close modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            // Reset form
+            if (modalId === 'addUserModal') {
+                document.getElementById('addUserForm').reset();
+                document.getElementById('studentNameGroup').style.display = 'none';
+            } else if (modalId === 'resetPasswordModal') {
+                document.getElementById('resetPasswordForm').reset();
+            } else if (modalId === 'changeAdminPasswordModal') {
+                document.getElementById('changeAdminPasswordForm').reset();
+            } else if (modalId === 'configureTimerModal') {
+                document.getElementById('configureTimerForm').reset();
+                document.getElementById('timeLimitGroup').style.display = 'none';
+            }
+        }
+        // Pending import container used by modal
+        let importPending = null; // {type: 'topics'|'users', items: [...] , sourceData: <original parsed data>}
+
+        // Show Import Summary Modal
+        function showImportSummaryModal(pending) {
+            importPending = pending;
+            const container = document.getElementById('importSummaryBody');
+            container.innerHTML = '';
+            if (!pending || !Array.isArray(pending.items) || pending.items.length === 0) {
+                container.innerHTML = '<p>No hay elementos pendientes para importar.</p>';
+            } else {
+                const list = document.createElement('div');
+                pending.items.forEach((it, idx) => {
+                    const row = document.createElement('div');
+                    row.style.borderBottom = '1px solid #eee';
+                    row.style.padding = '8px 0';
+                    const title = document.createElement('div');
+                    title.style.fontWeight = '600';
+                    title.textContent = it.display || (it.title || it.username || `Ítem ${idx+1}`);
+                    const info = document.createElement('div');
+                    info.style.marginTop = '6px';
+                    info.textContent = it.note || '';
+                    const actions = document.createElement('div');
+                    actions.style.marginTop = '8px';
+
+                    const select = document.createElement('select');
+                    select.className = 'form-control';
+                    select.dataset.index = idx;
+                    const optReplace = document.createElement('option'); optReplace.value = 'replace'; optReplace.text = 'Reemplazar';
+                    const optIgnore = document.createElement('option'); optIgnore.value = 'ignore'; optIgnore.text = 'Ignorar';
+                    const optRename = document.createElement('option'); optRename.value = 'rename'; optRename.text = 'Renombrar';
+                    const optAdd = document.createElement('option'); optAdd.value = 'add'; optAdd.text = 'Añadir (nuevo)';
+                    select.appendChild(optReplace);
+                    select.appendChild(optIgnore);
+                    if (pending.type === 'topics') select.appendChild(optRename);
+                    select.appendChild(optAdd);
+
+                    // default choice based on suggestedAction
+                    if (it.suggested === 'ignore') select.value = 'ignore';
+                    else if (it.suggested === 'add') select.value = 'add';
+                    else if (it.suggested === 'replace') select.value = 'replace';
+                    else select.value = 'replace';
+
+                    actions.appendChild(select);
+
+                    // rename input (hidden unless rename selected)
+                    const renameInput = document.createElement('input');
+                    renameInput.type = 'text';
+                    renameInput.placeholder = 'Nuevo título / usuario';
+                    renameInput.className = 'form-control';
+                    renameInput.style.display = 'none';
+                    renameInput.dataset.index = idx;
+                    actions.appendChild(renameInput);
+
+                    select.addEventListener('change', (e) => {
+                        const v = e.target.value;
+                        if (v === 'rename') renameInput.style.display = 'block'; else renameInput.style.display = 'none';
+                    });
+
+                    row.appendChild(title);
+                    row.appendChild(info);
+                    row.appendChild(actions);
+                    list.appendChild(row);
+                });
+                container.appendChild(list);
+            }
+            document.getElementById('importSummaryModal').style.display = 'flex';
+        }
+
+        // Apply decisions from modal
+        async function applyImportDecisions() {
+            if (!importPending) return closeModal('importSummaryModal');
+            const container = document.getElementById('importSummaryBody');
+            const selects = container.querySelectorAll('select');
+            const renameInputs = container.querySelectorAll('input[type=text]');
+            const decisions = [];
+            selects.forEach(s => {
+                const idx = parseInt(s.dataset.index, 10);
+                const decision = { index: idx, action: s.value };
+                decisions.push(decision);
+            });
+            // map rename values
+            renameInputs.forEach(inp => {
+                const idx = parseInt(inp.dataset.index, 10);
+                const found = decisions.find(d => d.index === idx);
+                if (found) found.rename = inp.value && inp.value.trim() ? inp.value.trim() : null;
+            });
+
+            // Apply to registro
+            const data = await readRegistro();
+            const historyEntry = { timestamp: new Date().toISOString(), type: importPending.type, added: 0, replaced: 0, ignored: 0, details: [] };
+            if (importPending.type === 'topics') {
+                data.topics = data.topics || [];
+                let added = 0, replaced = 0, ignored = 0;
+                importPending.items.forEach((it, i) => {
+                    const dec = decisions.find(d => d.index === i) || { action: 'ignore' };
+                    const existing = data.topics.find(t => t.title === it.title);
+                        if (dec.action === 'ignore') { ignored++; historyEntry.ignored++; historyEntry.details.push({ action: 'ignored', item: it.display || it.title }); return; }
+                        if (dec.action === 'replace' && existing) {
+                        it.id = existing.id;
+                        const idx = data.topics.findIndex(t => t.id === existing.id);
+                        data.topics[idx] = it;
+                            replaced++; historyEntry.replaced++; historyEntry.details.push({ action: 'replaced', item: it.display || it.title });
+                        return;
+                    }
+                        if (dec.action === 'rename') {
+                        it.title = dec.rename || (it.title + ' (importado)');
+                        it.id = simpleUUID();
+                        data.topics.push(it);
+                        added++; historyEntry.added++; historyEntry.details.push({ action: 'added', item: it.title });
+                        return;
+                    }
+                    if (dec.action === 'add') {
+                        it.id = simpleUUID();
+                        data.topics.push(it);
+                        added++;
+                        return;
+                    }
+                    // fallback: add
+                    it.id = simpleUUID();
+                    data.topics.push(it);
+                    added++;
+                    });
+                await saveRegistro(data);
+                // save history
+                data.importHistory = data.importHistory || [];
+                data.importHistory.push(historyEntry);
+                await saveRegistro(data);
+                showNotification(`Importación aplicada. Añadidos: ${added}. Reemplazados: ${replaced}. Ignorados: ${ignored}.`, 'success');
+                await loadTopics();
+                await loadTeacherTopics();
+            } else if (importPending.type === 'users') {
+                data.teachers = data.teachers || [];
+                data.students = data.students || [];
+                let addedT = 0, replacedT = 0, ignoredT = 0;
+                let addedS = 0, replacedS = 0, ignoredS = 0;
+                importPending.items.forEach((it, i) => {
+                    const dec = decisions.find(d => d.index === i) || { action: 'ignore' };
+                    if (it.kind === 'admin') {
+                        if (dec.action === 'replace') {
+                            data.admin.username = it.username;
+                            if (it.password) data.admin.password = isHashed(it.password) ? it.password : simpleHash(it.password);
+                            historyEntry.details.push({ action: 'admin_replaced', item: it.username });
+                        } else {
+                            historyEntry.details.push({ action: 'admin_ignored', item: it.username });
+                        }
+                        return;
+                    }
+                    if (it.kind === 'teacher') {
+                        const existing = data.teachers.find(t => t.username === it.username);
+                        if (dec.action === 'ignore') { ignoredT++; historyEntry.ignored++; historyEntry.details.push({ action: 'ignored', item: it.display }); return; }
+                            if (dec.action === 'replace' && existing) {
+                                if (it.password && String(it.password).trim()) {
+                                    existing.password = isHashed(it.password) ? it.password : simpleHash(it.password);
+                                } else {
+                                    // keep existing password if incoming has none
+                                }
+                                existing.subject = it.subject || existing.subject; existing.province = it.province || existing.province; existing.school = it.school || existing.school; replacedT++; historyEntry.replaced++; historyEntry.details.push({ action: 'replaced', item: it.display }); return;
+                            }
+                            if (dec.action === 'rename') {
+                                let tempPass = null;
+                                let hashed = '';
+                                if (it.password && String(it.password).trim()) { hashed = isHashed(it.password) ? it.password : simpleHash(it.password); } else { tempPass = generateTempPassword(); hashed = simpleHash(tempPass); }
+                                data.teachers.push({ id: simpleUUID(), username: dec.rename || it.username, password: hashed, subject: it.subject || '', province: it.province || '', school: it.school || '' }); addedT++; historyEntry.added++; const addedDetail = { action: 'added', item: dec.rename || it.username }; if (tempPass) addedDetail.tempPassword = tempPass; historyEntry.details.push(addedDetail); return;
+                            }
+                            if (dec.action === 'add') {
+                                let tempPass = null;
+                                let hashed = '';
+                                if (it.password && String(it.password).trim()) { hashed = isHashed(it.password) ? it.password : simpleHash(it.password); } else { tempPass = generateTempPassword(); hashed = simpleHash(tempPass); }
+                                data.teachers.push({ id: simpleUUID(), username: it.username, password: hashed, subject: it.subject || '', province: it.province || '', school: it.school || '' }); addedT++; historyEntry.added++; const addedDetail2 = { action: 'added', item: it.display }; if (tempPass) addedDetail2.tempPassword = tempPass; historyEntry.details.push(addedDetail2); return;
+                            }
+                        // fallback add
+                        let passValT = '';
+                        if (it.password && String(it.password).trim()) passValT = isHashed(it.password) ? it.password : simpleHash(it.password); else passValT = simpleHash('');
+                        data.teachers.push({ id: simpleUUID(), username: it.username, password: passValT, subject: it.subject || '', province: it.province || '', school: it.school || '' }); addedT++; historyEntry.added++; historyEntry.details.push({ action: 'added', item: it.display });
+                    } else if (it.kind === 'student') {
+                        const existing = data.students.find(s => s.username === it.username);
+                        if (dec.action === 'ignore') { ignoredS++; historyEntry.ignored++; historyEntry.details.push({ action: 'ignored', item: it.display }); return; }
+                        if (dec.action === 'replace' && existing) {
+                            if (it.password && String(it.password).trim()) {
+                                existing.password = isHashed(it.password) ? it.password : simpleHash(it.password);
+                            } else {
+                                // keep existing password if incoming has none
+                            }
+                            existing.name = it.name || existing.name; existing.grade = it.grade || existing.grade; existing.province = it.province || existing.province; existing.school = it.school || existing.school; replacedS++; historyEntry.replaced++; historyEntry.details.push({ action: 'replaced', item: it.display }); return;
+                        }
+                        if (dec.action === 'rename') {
+                            let tempPass = null;
+                            let hashed = '';
+                            if (it.password && String(it.password).trim()) { hashed = isHashed(it.password) ? it.password : simpleHash(it.password); } else { tempPass = generateTempPassword(); hashed = simpleHash(tempPass); }
+                            data.students.push({ id: simpleUUID(), username: dec.rename || it.username, password: hashed, name: it.name, grade: it.grade || '', province: it.province || '', school: it.school || '' }); addedS++; historyEntry.added++; const addedDetail3 = { action: 'added', item: dec.rename || it.username }; if (tempPass) addedDetail3.tempPassword = tempPass; historyEntry.details.push(addedDetail3); return;
+                        }
+                        if (dec.action === 'add') {
+                            let tempPass = null;
+                            let hashed = '';
+                            if (it.password && String(it.password).trim()) { hashed = isHashed(it.password) ? it.password : simpleHash(it.password); } else { tempPass = generateTempPassword(); hashed = simpleHash(tempPass); }
+                            data.students.push({ id: simpleUUID(), username: it.username, password: hashed, name: it.name, grade: it.grade || '', province: it.province || '', school: it.school || '' }); addedS++; historyEntry.added++; const addedDetail4 = { action: 'added', item: it.display }; if (tempPass) addedDetail4.tempPassword = tempPass; historyEntry.details.push(addedDetail4); return;
+                        }
+                        // fallback add
+                        let passValS = '';
+                        if (it.password && String(it.password).trim()) passValS = isHashed(it.password) ? it.password : simpleHash(it.password); else passValS = simpleHash('');
+                        data.students.push({ id: simpleUUID(), username: it.username, password: passValS, name: it.name, grade: it.grade || '', province: it.province || '', school: it.school || '' }); addedS++; historyEntry.added++; historyEntry.details.push({ action: 'added', item: it.display });
+                    }
+                });
+                await saveRegistro(data);
+                // record history
+                data.importHistory = data.importHistory || [];
+                data.importHistory.push(historyEntry);
+                await saveRegistro(data);
+                const summary = `Importación de usuarios aplicada. Profesores - Añadidos: ${addedT}, Reemplazados: ${replacedT}, Ignorados: ${ignoredT}. Estudiantes - Añadidos: ${addedS}, Reemplazados: ${replacedS}, Ignorados: ${ignoredS}.`;
+                // if any temp passwords were created in this historyEntry, show modal
+                const temps = historyEntry.details.filter(d => d.tempPassword).map(d => ({ username: d.username || d.item, tempPassword: d.tempPassword }));
+                if (temps.length > 0) showTempPasswordsModal(temps);
+                showNotification(summary, 'success');
+                await loadUsers();
+            }
+            importPending = null;
+            closeModal('importSummaryModal');
+        }
+
+        // Show student result summary modal and associate generated identifier with the result
+        async function showResultSummaryModal(resultId) {
+            if (!resultId) {
+                // No result to show, just go back
+                backToTopics();
+                return;
+            }
+            const data = await readRegistro();
+            const result = (data.results || []).find(r => r.id === resultId);
+            if (!result) {
+                showNotification('Resultado no encontrado', 'error');
+                backToTopics();
+                return;
+            }
+            // Generate identifier and save it to the result
+            const identifier = generate15DigitId();
+            result.Identificador = identifier;
+
+            // Also enrich result with student info if available
+            const student = (data.students || []).find(s => s.username === result.studentName);
+            const studentFullName = student ? student.name || result.studentName : result.studentName;
+            const grade = student ? (student.grade || '') : (result.grade || '');
+            const province = student ? (student.province || '') : (result.province || '');
+            const school = student ? (student.school || '') : (result.school || '');
+
+            // persist
+            await saveRegistro(data);
+
+            // Build modal content
+            const body = document.getElementById('resultSummaryBody');
+            body.innerHTML = '';
+            const list = document.createElement('div');
+            list.innerHTML = `
+                <p><strong>Nombre:</strong> ${studentFullName}</p>
+                <p><strong>Grado:</strong> ${grade}</p>
+                <p><strong>Tema:</strong> ${result.topicTitle}</p>
+                <p><strong>Tiempo empleado:</strong> ${result.timeSpent}</p>
+                <p><strong>Nota:</strong> ${result.score}</p>
+                <p><strong>Correctas:</strong> ${result.correctAnswers}</p>
+                <p><strong>Incorrectas:</strong> ${result.incorrectAnswers}</p>
+                <p><strong>Identificador:</strong> ${identifier}</p>
+            `;
+            body.appendChild(list);
+            document.getElementById('resultSummaryModal').style.display = 'flex';
+        }
+        // Show modal listing temp passwords (array of {username, tempPassword})
+        function showTempPasswordsModal(list) {
+            const body = document.getElementById('tempPasswordsBody');
+            body.innerHTML = '';
+            if (!list || list.length === 0) {
+                body.innerHTML = '<p>No se generaron contraseñas temporales.</p>';
+                document.getElementById('tempPasswordsModal').style.display = 'flex';
+                return;
+            }
+            const table = document.createElement('table');
+            table.className = 'table';
+            table.innerHTML = '<thead><tr><th>Usuario</th><th>Contraseña Temporal</th></tr></thead>';
+            const tbody = document.createElement('tbody');
+            list.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${item.username}</td><td><input readonly class="form-control" value="${item.tempPassword}"></td>`;
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+            body.appendChild(table);
+            document.getElementById('tempPasswordsModal').style.display = 'flex';
+        }
+
+        function downloadTempPasswords() {
+            const body = document.getElementById('tempPasswordsBody');
+            const inputs = body.querySelectorAll('tbody tr');
+            if (!inputs || inputs.length === 0) return;
+            const rows = [];
+            body.querySelectorAll('tbody tr').forEach(tr => {
+                const tds = tr.querySelectorAll('td');
+                const user = tds[0].textContent;
+                const pass = tds[1].querySelector('input').value;
+                rows.push(`${user},${pass}`);
+            });
+            const csv = 'Usuario,Contraseña\n' + rows.join('\n');
+            const dataUri = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            const link = document.createElement('a');
+            link.setAttribute('href', dataUri);
+            link.setAttribute('download', 'temp_passwords.csv');
+            link.click();
+        }
+        // Toggle student name field based on user type
+        function toggleStudentNameField() {
+            const userType = document.getElementById('userType').value;
+            const studentNameGroup = document.getElementById('studentNameGroup');
+            const gradeGroup = document.getElementById('newGradeGroup');
+            const subjectGroup = document.getElementById('newSubjectGroup');
+            if (userType === 'student') {
+                studentNameGroup.style.display = 'block';
+                gradeGroup.style.display = 'block';
+                subjectGroup.style.display = 'none';
+            } else {
+                studentNameGroup.style.display = 'none';
+                gradeGroup.style.display = 'none';
+                subjectGroup.style.display = 'block';
+            }
+        }
+        // Add user (async, ID-based, passwords hashed)
+        async function addUser() {
+            const userType = document.getElementById('userType').value;
+            const username = document.getElementById('newUsername').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const studentName = document.getElementById('newStudentName').value.trim();
+            const province = document.getElementById('newProvince').value;
+            const school = document.getElementById('newSchool').value.trim();
+            const grade = document.getElementById('newGrade') ? document.getElementById('newGrade').value.trim() : '';
+            const subject = document.getElementById('newSubject') ? document.getElementById('newSubject').value.trim() : '';
+            if (!username || !password) {
+                showNotification('Por favor, completa todos los campos requeridos', 'error');
+                return;
+            }
+            if (userType === 'student' && !studentName) {
+                showNotification('Por favor, ingresa el nombre del estudiante', 'error');
+                return;
+            }
+            const data = await readRegistro();
+            data.teachers = data.teachers || [];
+            data.students = data.students || [];
+            // Check if username already exists
+            if (data.teachers.find(t => t.username === username) || data.students.find(s => s.username === username) || data.admin.username === username) {
+                showNotification('El nombre de usuario ya existe', 'error');
+                return;
+            }
+            if (userType === 'teacher') {
+                data.teachers.push({ id: simpleUUID(), username: username, password: simpleHash(password), province: province || '', school: school || '', subject: subject || '' });
+            } else {
+                data.students.push({ id: simpleUUID(), username: username, password: simpleHash(password), name: studentName, province: province || '', school: school || '', grade: grade || '' });
+            }
+            await saveRegistro(data);
+            // Do not auto-export users to avoid accidental leaks
+            showNotification('Usuario agregado correctamente', 'success');
+            closeModal('addUserModal');
+            if (currentRole === 'admin') await loadUsers();
+        }
+        // Delete user by id
+        async function deleteUser(userId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este usuario?')) return;
+            const data = await readRegistro();
+            data.teachers = (data.teachers || []).filter(t => t.id !== userId);
+            data.students = (data.students || []).filter(s => s.id !== userId);
+            await saveRegistro(data);
+            showNotification('Usuario eliminado correctamente', 'success');
+            if (currentRole === 'admin') await loadUsers();
+        }
+        // Reset password (hash)
+        async function resetPassword() {
+            const userType = document.getElementById('resetUserType').value;
+            const username = document.getElementById('resetUsername').value.trim();
+            const newPassword = document.getElementById('newPasswordReset').value;
+            if (!username || !newPassword) {
+                showNotification('Por favor, completa todos los campos', 'error');
+                return;
+            }
+            const data = await readRegistro();
+            if (userType === 'teacher') {
+                const teacher = (data.teachers || []).find(t => t.username === username);
+                if (!teacher) { showNotification('Usuario no encontrado', 'error'); return; }
+                teacher.password = simpleHash(newPassword);
+            } else if (userType === 'student') {
+                const student = (data.students || []).find(s => s.username === username);
+                if (!student) { showNotification('Usuario no encontrado', 'error'); return; }
+                student.password = simpleHash(newPassword);
+            }
+            await saveRegistro(data);
+            showNotification('Contraseña restablecida correctamente', 'success');
+            closeModal('resetPasswordModal');
+        }
+        // Change admin password (hashed)
+        async function changeAdminPassword() {
+            const currentPassword = document.getElementById('currentAdminPassword').value;
+            const newPassword = document.getElementById('newAdminPassword').value;
+            const confirmPassword = document.getElementById('confirmNewAdminPassword').value;
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showNotification('Por favor, completa todos los campos', 'error');
+                return;
+            }
+            if (newPassword !== confirmPassword) {
+                showNotification('Las nuevas contraseñas no coinciden', 'error');
+                return;
+            }
+            const data = await readRegistro();
+            if (data.admin.password !== simpleHash(currentPassword)) {
+                showNotification('La contraseña actual es incorrecta', 'error');
+                return;
+            }
+            data.admin.password = simpleHash(newPassword);
+            await saveRegistro(data);
+            showNotification('Contraseña cambiada correctamente', 'success');
+            closeModal('changeAdminPasswordModal');
+        }
+        // Confirm clear storage
+        async function confirmClearStorage() {
+            const data = await readRegistro();
+            const adminData = data.admin;
+            const defaultData = {
+                admin: adminData,
+                teachers: [],
+                students: [],
+                topics: [],
+                results: []
+            };
+            await saveRegistro(defaultData);
+            closeModal('clearStorageModal');
+            showNotification('Datos limpiados correctamente. El sistema se ha reiniciado.', 'warning');
+            await loadAdminData();
+        }
+        // Start editing topic (load into form) without deleting original
+        async function startEditingTopic(topicId) {
+            const data = await readRegistro();
+            const topic = (data.topics || []).find(t => t.id === topicId);
+            if (!topic) { showNotification('Tema no encontrado', 'error'); return; }
+            // Switch to create topic tab
+            switchTeacherTab('createTopicTab', { currentTarget: document.querySelector('#teacherDashboard .tab') });
+            // Populate form
+            document.getElementById('topicTitle').value = topic.title;
+            // Clear questions container
+            const questionsContainer = document.getElementById('questionsContainer');
+            questionsContainer.innerHTML = '<h3>Preguntas</h3>';
+            // Add questions
+            topic.questions.forEach((question, i) => {
+                const questionItem = document.createElement('div');
+                questionItem.className = 'question-item';
+                questionItem.innerHTML = `
+                    <div class="question-number">Pregunta ${i + 1}</div>
+                    <div class="form-group">
+                        <label>Enunciado</label>
+                        <input type="text" class="form-control question-text" value="${question.text}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción A</label>
+                        <input type="text" class="form-control option-a" value="${question.options[0]}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción B</label>
+                        <input type="text" class="form-control option-b" value="${question.options[1]}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción C</label>
+                        <input type="text" class="form-control option-c" value="${question.options[2]}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Opción D</label>
+                        <input type="text" class="form-control option-d" value="${question.options[3]}" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Respuesta Correcta</label>
+                        <select class="form-control correct-answer" required>
+                            <option value="">Selecciona...</option>
+                            <option value="A" ${question.correctAnswer === 'A' ? 'selected' : ''}>A</option>
+                            <option value="B" ${question.correctAnswer === 'B' ? 'selected' : ''}>B</option>
+                            <option value="C" ${question.correctAnswer === 'C' ? 'selected' : ''}>C</option>
+                            <option value="D" ${question.correctAnswer === 'D' ? 'selected' : ''}>D</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">Eliminar</button>
+                `;
+                questionsContainer.appendChild(questionItem);
+            });
+            questionCount = topic.questions.length;
+            editingTopicId = topic.id; // preserve until save
+            showNotification('Tema cargado para edición. Guarda los cambios cuando termines.', 'success');
+            // show cancel button in teacher form
+            const cancelBtn = document.getElementById('cancelEditBtn');
+            if (cancelBtn) cancelBtn.style.display = 'inline-block';
+        }
+
+        // NUEVAS FUNCIONES PARA GESTIÓN DE RESULTADOS
+
+        // Exportar resultados
+        async function exportResults() {
+            const data = await readRegistro();
+            const resultsData = data.results || [];
+            if (resultsData.length === 0) {
+                showNotification('No hay resultados para exportar', 'warning');
+                return;
+            }
+            const dataStr = JSON.stringify(resultsData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'resultados.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            showNotification('Resultados exportados correctamente', 'success');
+        }
+
+        // Importar resultados
+        function importResults(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const importedResults = JSON.parse(e.target.result);
+                    if (!Array.isArray(importedResults)) {
+                        throw new Error('Formato de archivo inválido');
+                    }
+                    const data = await readRegistro();
+                    data.results = data.results || [];
+                    let added = 0;
+                    for (let r of importedResults) {
+                        // basic validation
+                        if (!r.studentName || !r.topicTitle || typeof r.score !== 'number') continue;
+                        r.id = r.id || simpleUUID();
+                        data.results.push(r);
+                        added++;
+                    }
+                    await saveRegistro(data);
+                    showNotification(`Resultados importados correctamente. Añadidos: ${added}.`, 'success');
+                    await loadResults();
+                } catch (error) {
+                    showNotification('Error al importar los resultados: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Eliminar un resultado específico
+        async function deleteResult(resultId) {
+            if (!confirm('¿Estás seguro de que quieres eliminar este registro de resultados?')) return;
+            const data = await readRegistro();
+            data.results = (data.results || []).filter(r => r.id !== resultId);
+            await saveRegistro(data);
+            showNotification('Registro eliminado correctamente', 'success');
+            await loadResults();
+        }
+    </script>
+</body>
+</html>
