@@ -1,0 +1,312 @@
+{
+  "admin": {
+    "id": "702b284b1b1e",
+    "username": "admin",
+    "password": "h39c43b7d"
+  },
+  "teachers": [
+    {
+      "id": "15ba454ddb5a",
+      "username": "Jadel",
+      "password": "h5d9f9d40",
+      "subject": "",
+      "province": "",
+      "school": ""
+    }
+  ],
+  "students": [
+    {
+      "id": "97f52d44abf3",
+      "username": "Christian",
+      "password": "hbe32",
+      "name": "Christian",
+      "grade": "",
+      "province": "",
+      "school": ""
+    },
+    {
+      "id": "328ddb42ba8e",
+      "username": "Denis",
+      "password": "hbe32",
+      "name": "Denis Lazaro",
+      "grade": "",
+      "province": "",
+      "school": ""
+    },
+    {
+      "id": "f37bc5428965",
+      "username": "Lazaro",
+      "password": "hbe32",
+      "name": "Lázaro Daniel",
+      "grade": "",
+      "province": "",
+      "school": ""
+    },
+    {
+      "id": "9829b641d954",
+      "username": "Dayana",
+      "password": "hbe32",
+      "name": "Dayana",
+      "grade": "",
+      "province": "",
+      "school": ""
+    },
+    {
+      "id": "0b4e344faa25",
+      "username": "Roque",
+      "password": "hbe32",
+      "name": "Roque Roque",
+      "grade": "",
+      "province": "",
+      "school": ""
+    },
+    {
+      "id": "8add8c4a4a36",
+      "username": "Samanta",
+      "password": "hbe32",
+      "name": "Samanta",
+      "grade": "",
+      "province": "",
+      "school": ""
+    }
+  ],
+  "results": [
+    {
+      "studentName": "Roque",
+      "topicTitle": "Tectónicas de Placas",
+      "score": 80,
+      "correctAnswers": 20,
+      "incorrectAnswers": 5,
+      "timeSpent": "09:34",
+      "date": "2025-09-15T23:11:41.745Z",
+      "id": "f5cd0948d88a"
+    },
+    {
+      "studentName": "Lazaro",
+      "topicTitle": "Tectónicas de Placas",
+      "score": 60,
+      "correctAnswers": 15,
+      "incorrectAnswers": 10,
+      "timeSpent": "04:10",
+      "date": "2025-09-15T23:33:26.792Z",
+      "id": "4236b64cbb8e"
+    },
+    {
+      "studentName": "Dayana",
+      "topicTitle": "Tectónicas de Placas",
+      "score": 84,
+      "correctAnswers": 21,
+      "incorrectAnswers": 4,
+      "timeSpent": "06:24",
+      "date": "2025-09-24T23:41:12.691Z",
+      "id": "515f1443a8f3"
+    },
+    {
+      "studentName": "Roque",
+      "topicTitle": "Relieve",
+      "score": 87,
+      "correctAnswers": 26,
+      "incorrectAnswers": 4,
+      "timeSpent": "08:47",
+      "date": "2025-09-29T21:43:46.255Z",
+      "id": "ec43894fca45"
+    },
+    {
+      "studentName": "Lazaro",
+      "topicTitle": "Relieve",
+      "score": 87,
+      "correctAnswers": 26,
+      "incorrectAnswers": 4,
+      "timeSpent": "08:00",
+      "date": "2025-09-29T22:24:13.829Z",
+      "id": "b27b734c6bab"
+    },
+    {
+      "studentName": "Denis",
+      "topicTitle": "Relieve",
+      "score": 83,
+      "correctAnswers": 25,
+      "incorrectAnswers": 5,
+      "timeSpent": "08:49",
+      "date": "2025-09-29T22:36:07.687Z",
+      "id": "39dd55410abd"
+    },
+    {
+      "studentName": "Christian",
+      "topicTitle": "Relieve",
+      "score": 73,
+      "correctAnswers": 22,
+      "incorrectAnswers": 8,
+      "timeSpent": "07:03",
+      "date": "2025-09-29T22:45:29.475Z",
+      "id": "cb11f44a9864"
+    },
+    {
+      "studentName": "Samanta",
+      "topicTitle": "Relieve",
+      "score": 20,
+      "correctAnswers": 6,
+      "incorrectAnswers": 24,
+      "timeSpent": "12:16",
+      "date": "2025-09-29T23:02:15.026Z",
+      "id": "e8392f431bf2"
+    },
+    {
+      "studentName": "Dayana",
+      "topicTitle": "Relieve",
+      "score": 87,
+      "correctAnswers": 26,
+      "incorrectAnswers": 4,
+      "timeSpent": "14:37",
+      "date": "2025-09-29T23:53:20.854Z",
+      "id": "5d16d04ebaac"
+    },
+    {
+      "studentName": "Roque",
+      "topicTitle": "Hidrografía",
+      "score": 78,
+      "correctAnswers": 31,
+      "incorrectAnswers": 9,
+      "timeSpent": "10:31",
+      "date": "2025-10-21T00:18:32.186Z",
+      "id": "9e3f9b4ed8b4"
+    },
+    {
+      "studentName": "Lazaro",
+      "topicTitle": "Hidrografía",
+      "score": 78,
+      "correctAnswers": 31,
+      "incorrectAnswers": 9,
+      "timeSpent": "08:47",
+      "date": "2025-10-21T00:31:41.624Z",
+      "id": "5fe794406bcb"
+    },
+    {
+      "studentName": "Cristian",
+      "topicTitle": "Hidrografía",
+      "score": 80,
+      "correctAnswers": 32,
+      "incorrectAnswers": 8,
+      "timeSpent": "08:44",
+      "date": "2025-10-21T00:43:25.503Z",
+      "id": "b0ab674bea59"
+    },
+    {
+      "studentName": "Denis",
+      "topicTitle": "Hidrografía",
+      "score": 73,
+      "correctAnswers": 29,
+      "incorrectAnswers": 11,
+      "timeSpent": "11:57",
+      "date": "2025-10-21T00:57:59.429Z",
+      "id": "61ad9d4c69f5"
+    },
+    {
+      "studentName": "Samantha",
+      "topicTitle": "Hidrografía",
+      "score": 28,
+      "correctAnswers": 11,
+      "incorrectAnswers": 29,
+      "timeSpent": "22:04",
+      "date": "2025-10-21T01:21:05.979Z",
+      "id": "3ba85e4409c3"
+    },
+    {
+      "studentName": "Dayana",
+      "topicTitle": "Hidrografía",
+      "score": 80,
+      "correctAnswers": 32,
+      "incorrectAnswers": 8,
+      "timeSpent": "22:59",
+      "date": "2025-10-21T01:45:57.050Z",
+      "id": "ea03a242daf9"
+    },
+    {
+      "studentName": "Lazaro",
+      "topicTitle": "Turismo Global",
+      "score": 90,
+      "correctAnswers": 18,
+      "incorrectAnswers": 2,
+      "timeSpent": "06:27",
+      "date": "2025-11-11T01:31:48.632Z",
+      "id": "4826e84ceb0a"
+    },
+    {
+      "studentName": "Denis",
+      "topicTitle": "Turismo Global",
+      "score": 80,
+      "correctAnswers": 16,
+      "incorrectAnswers": 4,
+      "timeSpent": "05:36",
+      "date": "2025-11-11T01:42:56.210Z",
+      "id": "70e1fe462a46"
+    },
+    {
+      "studentName": "Cristian",
+      "topicTitle": "Turismo Global",
+      "score": 75,
+      "correctAnswers": 15,
+      "incorrectAnswers": 5,
+      "timeSpent": "04:28",
+      "date": "2025-11-11T01:49:13.982Z",
+      "id": "cd135546898e"
+    },
+    {
+      "studentName": "Dayana",
+      "topicTitle": "Turismo Global",
+      "score": 85,
+      "correctAnswers": 17,
+      "incorrectAnswers": 3,
+      "timeSpent": "09:37",
+      "date": "2025-11-25T05:18:49.465Z",
+      "id": "a0e435408b87"
+    }
+  ],
+  "importHistory": [
+    {
+      "timestamp": "2025-11-25T05:11:21.154Z",
+      "type": "import_users",
+      "added": 7,
+      "replaced": 0,
+      "ignored": 0,
+      "details": [
+        {
+          "action": "added_teacher",
+          "username": "Jadel"
+        },
+        {
+          "action": "added_student",
+          "username": "Christian"
+        },
+        {
+          "action": "added_student",
+          "username": "Denis"
+        },
+        {
+          "action": "added_student",
+          "username": "Lazaro"
+        },
+        {
+          "action": "added_student",
+          "username": "Dayana"
+        },
+        {
+          "action": "added_student",
+          "username": "Roque"
+        },
+        {
+          "action": "added_student",
+          "username": "Samanta"
+        }
+      ]
+    },
+    {
+      "timestamp": "2025-11-25T05:11:37.388Z",
+      "type": "import_all",
+      "added": 0,
+      "replaced": 0,
+      "ignored": 0,
+      "details": []
+    }
+  ]
+}
